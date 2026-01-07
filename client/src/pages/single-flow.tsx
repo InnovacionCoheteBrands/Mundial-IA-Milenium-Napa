@@ -214,8 +214,9 @@ function CaptureSection({
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode,
-          width: { ideal: 1280 },
-          height: { ideal: 1280 },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+          aspectRatio: { ideal: 16 / 9 },
         },
         audio: false,
       });
@@ -327,13 +328,13 @@ function CaptureSection({
         </h1>
       </header>
 
-      <main className="container mx-auto flex max-w-2xl flex-col items-center px-4 py-6 md:py-8">
+      <main className="container mx-auto flex max-w-4xl flex-col items-center px-4 py-6 md:py-8">
         <p className="mb-6 text-center text-muted-foreground">
-          Toma una selfie o sube una foto para transformarla
+          Toma una foto horizontal o sube una imagen para transformarla
         </p>
 
         <Card
-          className="relative aspect-square w-full max-w-md overflow-hidden"
+          className="relative aspect-video w-full max-w-2xl overflow-hidden"
           style={{
             borderColor: teamColors?.primary,
             borderWidth: teamColors ? "3px" : "1px",
@@ -387,7 +388,7 @@ function CaptureSection({
 
         <canvas ref={canvasRef} className="hidden" />
 
-        <div className="mt-6 flex w-full max-w-md flex-col items-center gap-4">
+        <div className="mt-6 flex w-full max-w-2xl flex-col items-center gap-4">
           {capturedPreview ? (
             <div className="flex w-full gap-4">
               <Button
@@ -626,7 +627,7 @@ function ResultSection({
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto flex max-w-2xl flex-col items-center px-4 py-6 md:py-8">
+      <main className="container mx-auto flex max-w-4xl flex-col items-center px-4 py-6 md:py-8">
         <div className="mb-6 text-center md:mb-8">
           <h1
             className="text-2xl font-bold md:text-3xl"
@@ -662,7 +663,7 @@ function ResultSection({
                 <img
                   src={capturedImage}
                   alt="Foto original"
-                  className="aspect-square w-full rounded-md object-cover"
+                  className="aspect-video w-full rounded-md object-cover"
                   data-testid="img-original-fallback"
                 />
               </div>
@@ -670,7 +671,7 @@ function ResultSection({
           </Card>
         ) : (
           <Card
-            className="relative aspect-square w-full max-w-md overflow-hidden"
+            className="relative aspect-video w-full max-w-2xl overflow-hidden"
             style={{
               borderColor: teamColors?.primary,
               borderWidth: teamColors ? "3px" : "1px",
@@ -686,7 +687,7 @@ function ResultSection({
           </Card>
         )}
 
-        <div className="mt-6 flex w-full max-w-md flex-col gap-3 md:mt-8">
+        <div className="mt-6 flex w-full max-w-2xl flex-col gap-3 md:mt-8">
           {!hasError && (
             <div className="flex gap-3">
               <Button
