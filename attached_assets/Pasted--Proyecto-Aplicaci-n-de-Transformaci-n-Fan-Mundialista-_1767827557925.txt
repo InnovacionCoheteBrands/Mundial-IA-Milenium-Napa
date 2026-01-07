@@ -1,0 +1,45 @@
+# Proyecto: Aplicación de Transformación Fan Mundialista
+
+**Objetivo:** Construir una aplicación web de alta fidelidad, 100% responsiva (enfoque Mobile-First con escalado perfecto a PC), que transforme fotos de usuarios en retratos temáticos del mundial utilizando APIs específicas de IA.
+
+## 1. Requisitos de Diseño y UI/UX
+*   **Integración de Activos (Assets):**
+    *   Utiliza `Captura de pantalla 2026-01-05 171649.jpg` como fondo inmersivo en la pantalla de inicio.
+    *   Muestra `ChatGPT-Image-6-ene-2026-15_32_44.jpg` (Trofeo) y `logo-milenium.jpg` (Logo Milenium) de forma destacada como encabezados visuales principales.
+*   **Responsividad:** El diseño debe ser fluido. En móviles, los elementos deben apilarse verticalmente para facilitar el uso táctil. En PC, utiliza un diseño centrado basado en tarjetas o pantalla dividida para aprovechar el ancho.
+*   **Estilo Visual:** Energía deportiva, interfaz limpia, botones claros. El botón principal en la portada debe decir "Comenzar".
+
+## 2. Flujo de Usuario
+1.  **Portada:** El usuario ve la pantalla de bienvenida con los logos. Pulsa "Comenzar".
+2.  **Permisos y Configuración:**
+    *   Solicitar permisos de cámara.
+    *   **Selector de Equipo:** Mostrar una cuadrícula visual para elegir entre: México, EU, Canadá, España, Inglaterra, Brasil, Argentina, Portugal.
+3.  **Captura:** El usuario toma una selfie o sube una imagen.
+4.  **Procesamiento:** Mostrar un cargador (loader) con el texto "Transformando tu pasión..." mientras el backend gestiona las APIs.
+5.  **Resultado:** Mostrar la imagen final con botones para "Descargar" y "Volver a intentar".
+
+## 3. Pipeline de IA y Lógica de Negocio (Backend)
+Implementar un flujo de trabajo en el servidor para gestionar la transformación:
+
+### Paso A: Generación de Prompt (Gemini 3 Fast)
+*   **Acción:** Llamar a la API de **Gemini 3 Fast** para crear un prompt descriptivo basado en el equipo seleccionado.
+*   **Instrucción interna:** "Genera un prompt detallado para creación de imágenes de un fan de [Equipo Seleccionado] en un estadio del mundial. Describe la camiseta oficial, el ambiente vibrante y la iluminación cinematográfica. Asegúrate de especificar que los rasgos faciales de la persona deben permanecer intactos."
+
+### Paso B: Transformación de Imagen (Nano Banana Pro)
+*   **Entrada:** Foto original del usuario + Prompt generado en el Paso A.
+*   **Acción:** Enviar a la API de **Nano Banana Pro**.
+*   **Parámetros Estrictos:**
+    *   **Modo:** Edición de imagen (Inpainting).
+    *   **Estrategia de Máscara:** Segmentar automáticamente la ropa y el fondo.
+    *   **Preservación:** **CRÍTICO:** El rostro del usuario no debe modificarse para mantener su identidad. Solo se cambia la ropa por la camiseta del equipo y el fondo por el estadio.
+
+## 4. Gestión de Datos y Panel de Admin
+*   **Almacenamiento:** Guardar todas las imágenes resultantes en la base de datos o almacenamiento de objetos.
+*   **Galería de Administrador:** Crear una ruta discreta (ej. `/admin-secreto`) accesible mediante un botón pequeño en el pie de página.
+    *   Mostrar una galería con todos los resultados guardados.
+    *   Incluir un botón de descarga para cada imagen.
+
+## 5. Guías de Desarrollo para Replit
+*   **Arquitectura:** Priorizar la eficiencia en la llamada a las APIs para evitar latencia.
+*   **Optimización PC:** Asegurar que la cámara se centre correctamente en pantallas panorámicas.
+*   **Errores:** Manejar adecuadamente si el usuario rechaza permisos de cámara o si la API excede el tiempo de espera.
