@@ -195,6 +195,9 @@ export async function registerRoutes(
 
   app.get("/api/transformations", async (req, res) => {
     try {
+      res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.set("Pragma", "no-cache");
+      res.set("Expires", "0");
       const transformations = await storage.getAllTransformations();
       res.json(transformations);
     } catch (error) {
