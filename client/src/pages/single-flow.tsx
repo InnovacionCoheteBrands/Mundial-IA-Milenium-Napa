@@ -730,7 +730,7 @@ export default function SingleFlowPage() {
             </p>
           </div>
 
-          <Card className="w-full max-w-sm bg-background/95 backdrop-blur-md sm:max-w-md md:max-w-lg">
+          <Card className="w-full max-w-sm bg-background/95 backdrop-blur-md sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
             {renderStepContent()}
           </Card>
         </main>
