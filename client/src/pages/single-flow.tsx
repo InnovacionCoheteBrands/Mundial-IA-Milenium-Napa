@@ -23,6 +23,7 @@ import { apiRequest } from "@/lib/queryClient";
 import backgroundImage from "@assets/Captura_de_pantalla_2026-01-05_171649_1767827562768.png";
 import trophyImage from "@assets/ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png";
 import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
+import qrGallery from "@assets/qr-images-gallery.png";
 
 const teamFlags: Record<TeamId, string> = {
   mexico: "https://flagcdn.com/w80/mx.png",
@@ -564,21 +565,34 @@ function ResultContent({
           )}
         </div>
       ) : (
-        <div
-          className="relative aspect-video w-full overflow-hidden rounded-lg"
-          style={{
-            borderColor: teamColors?.primary,
-            borderWidth: teamColors ? "3px" : "1px",
-            borderStyle: "solid",
-          }}
-          data-testid="card-result-image"
-        >
-          <img
-            src={displayImage!}
-            alt="Retrato mundialista"
-            className="h-full w-full object-cover"
-            data-testid="img-result"
-          />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
+          <div
+            className="relative aspect-video w-full overflow-hidden rounded-lg sm:flex-1"
+            style={{
+              borderColor: teamColors?.primary,
+              borderWidth: teamColors ? "3px" : "1px",
+              borderStyle: "solid",
+            }}
+            data-testid="card-result-image"
+          >
+            <img
+              src={displayImage!}
+              alt="Retrato mundialista"
+              className="h-full w-full object-cover"
+              data-testid="img-result"
+            />
+          </div>
+          <div className="flex flex-col items-center gap-2 rounded-lg border bg-white p-3 sm:w-auto">
+            <img
+              src={qrGallery}
+              alt="QR Galería"
+              className="h-20 w-20 sm:h-24 sm:w-24"
+              data-testid="img-qr-gallery"
+            />
+            <p className="text-center text-[10px] text-muted-foreground sm:text-xs">
+              Escanea para ver<br />todas las fotos
+            </p>
+          </div>
         </div>
       )}
 
