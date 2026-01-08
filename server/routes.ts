@@ -3,6 +3,58 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { GoogleGenAI, Modality } from "@google/genai";
 import { teamInfo, type TeamId } from "@shared/schema";
+import sharp from "sharp";
+import path from "path";
+import fs from "fs";
+
+const WATERMARK_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium__1767829210784.png");
+
+async function addWatermarkToImage(imageBase64: string): Promise<string> {
+  try {
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
+    const imageBuffer = Buffer.from(base64Data, "base64");
+    
+    const mainImage = sharp(imageBuffer);
+    const metadata = await mainImage.metadata();
+    
+    if (!metadata.width || !metadata.height) {
+      console.log("Could not get image metadata, returning original");
+      return imageBase64;
+    }
+
+    const logoBuffer = fs.readFileSync(WATERMARK_PATH);
+    const logoMaxWidth = Math.floor(metadata.width * 0.2);
+    const logoMaxHeight = Math.floor(metadata.height * 0.15);
+    
+    const resizedLogo = await sharp(logoBuffer)
+      .resize(logoMaxWidth, logoMaxHeight, { fit: "inside" })
+      .toBuffer();
+    
+    const logoMeta = await sharp(resizedLogo).metadata();
+    const logoWidth = logoMeta.width || logoMaxWidth;
+    const logoHeight = logoMeta.height || logoMaxHeight;
+    
+    const padding = Math.floor(Math.min(metadata.width, metadata.height) * 0.03);
+    const left = metadata.width - logoWidth - padding;
+    const top = metadata.height - logoHeight - padding;
+
+    const watermarkedBuffer = await mainImage
+      .composite([
+        {
+          input: resizedLogo,
+          left,
+          top,
+        },
+      ])
+      .jpeg({ quality: 92 })
+      .toBuffer();
+
+    return `data:image/jpeg;base64,${watermarkedBuffer.toString("base64")}`;
+  } catch (error) {
+    console.error("Watermark error:", error);
+    return imageBase64;
+  }
+}
 
 function getAIClient() {
   const apiKey = process.env.AI_INTEGRATIONS_GEMINI_API_KEY;
@@ -28,7 +80,6 @@ function getTransformationPrompt(team: TeamId): string {
 
 CRITICAL - DO NOT MODIFY:
 - The person's face, facial features, and expression must remain EXACTLY the same
-- The person's pose and body position must remain EXACTLY the same
 - The person's hairstyle and hair color must remain EXACTLY the same
 
 CHANGES TO MAKE:
@@ -36,13 +87,18 @@ CHANGES TO MAKE:
    - The jersey should look realistic and properly fitted
    - Include authentic team colors, badges, and design details
 
-2. BACKGROUND: Transform the environment into an epic World Cup stadium setting
+2. TROPHY: The person must be holding the FIFA World Cup Trophy (golden trophy with globe held by two figures) in their hands
+   - Position the trophy naturally in their hands in a celebratory pose
+   - The trophy should be held up proudly, as if they just won the World Cup
+   - Make the trophy look realistic and properly lit
+
+3. BACKGROUND: Transform the environment into an epic World Cup stadium setting
    - Packed stadium with cheering fans in the background
    - Green football pitch visible
    - Dramatic stadium lighting
-   - Celebratory World Cup atmosphere
+   - Celebratory World Cup atmosphere with confetti
 
-Keep the person's identity, pose, and expression perfectly preserved while only changing their clothing and the surrounding environment.`;
+Keep the person's identity and face perfectly preserved while transforming them into a World Cup champion celebrating with the trophy.`;
 }
 
 async function transformImage(originalImageBase64: string, team: TeamId): Promise<string> {
@@ -111,16 +167,19 @@ export async function registerRoutes(
       const transformedImage = await transformImage(image, team as TeamId);
       console.log("Image transformation complete");
 
+      const watermarkedImage = await addWatermarkToImage(transformedImage);
+      console.log("Watermark applied");
+
       const transformation = await storage.createTransformation({
         team,
         originalImageUrl: image,
-        transformedImageUrl: transformedImage,
+        transformedImageUrl: watermarkedImage,
         promptUsed: prompt,
       });
 
       res.json({
         success: true,
-        transformedImage,
+        transformedImage: watermarkedImage,
         transformationId: transformation.id,
       });
     } catch (error) {
