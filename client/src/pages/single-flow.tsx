@@ -497,6 +497,7 @@ function ResultContent({
 }) {
   const { selectedTeam, transformedImage, capturedImage, error } = useApp();
   const { toast } = useToast();
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const teamColors = selectedTeam ? teamInfo[selectedTeam].colors : null;
   const hasError = error !== null || !transformedImage;
@@ -590,7 +591,7 @@ function ResultContent({
             <img
               src={capturedImage}
               alt="Foto original"
-              className="aspect-video w-full max-w-sm rounded-md object-cover"
+              className={`w-full max-w-sm rounded-md ${isMobile ? "aspect-[3/4] object-contain bg-black" : "aspect-video object-cover"}`}
               data-testid="img-original-fallback"
             />
           )}
@@ -598,7 +599,7 @@ function ResultContent({
       ) : (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
           <div
-            className="relative aspect-video w-full overflow-hidden rounded-lg sm:flex-1"
+            className={`relative w-full overflow-hidden rounded-lg sm:flex-1 ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
             style={{
               borderColor: teamColors?.primary,
               borderWidth: teamColors ? "3px" : "1px",
@@ -609,7 +610,7 @@ function ResultContent({
             <img
               src={displayImage!}
               alt="Retrato mundialista"
-              className="h-full w-full object-cover"
+              className={`h-full w-full ${isMobile ? "object-contain bg-black" : "object-cover"}`}
               data-testid="img-result"
             />
           </div>
