@@ -98,7 +98,7 @@ function GoldBadge({ children, className = "" }: { children: React.ReactNode; cl
 function IntroContent({ onContinue }: { onContinue: () => void }) {
   return (
     <div className="flex flex-col items-center gap-4 p-4 text-center sm:gap-6 sm:p-6 md:p-8">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-900/50 sm:h-18 sm:w-18">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-900/50 sm:h-[4.5rem] sm:w-[4.5rem]">
         <Camera className="h-7 w-7 text-white sm:h-8 sm:w-8" />
       </div>
 
@@ -664,6 +664,37 @@ function ResultContent({
               className={`h-full w-full ${isMobile ? "object-contain bg-black" : "object-cover"}`}
               data-testid="img-result"
             />
+
+            {/* Decorative soccer ball overlay — top-right */}
+            <div
+              className="pointer-events-none absolute -right-4 -top-4 select-none text-7xl opacity-20 sm:text-8xl"
+              aria-hidden="true"
+            >
+              ⚽
+            </div>
+
+            {/* Decorative soccer ball overlay — bottom-left */}
+            <div
+              className="pointer-events-none absolute -bottom-4 -left-4 select-none text-6xl opacity-15 sm:text-7xl"
+              aria-hidden="true"
+            >
+              ⚽
+            </div>
+
+            {/* Decorative jersey overlay — bottom-right corner */}
+            <div
+              className="pointer-events-none absolute bottom-3 right-3 flex flex-col items-center"
+              aria-hidden="true"
+            >
+              <div
+                className="flex h-10 w-8 items-center justify-center rounded-sm text-2xl opacity-40 sm:h-12 sm:w-10 sm:text-3xl"
+                style={{ backgroundColor: teamColors?.primary || "#16a34a", opacity: 0.35 }}
+              >
+                👕
+              </div>
+            </div>
+
+            {/* Milenium watermark */}
             <div className="absolute bottom-2 left-2">
               <span className="rounded-full bg-black/60 px-2 py-1 text-xs font-bold text-white backdrop-blur-sm">
                 ⚽ Milenium
