@@ -15,6 +15,8 @@ import {
   AlertTriangle,
   Loader2,
   Sparkles,
+  Trophy,
+  Gift,
 } from "lucide-react";
 import { useApp } from "@/lib/app-context";
 import { TEAMS, teamInfo, type TeamId } from "@shared/schema";
@@ -69,15 +71,39 @@ function compressImage(dataUrl: string): Promise<string> {
   });
 }
 
+function PromoBadge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border border-green-600/60 bg-green-900/80 px-3 py-1 text-xs font-bold uppercase tracking-widest text-green-300 ${className}`}>
+      {children}
+    </span>
+  );
+}
+
+function RedBadge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-md border border-red-700/60 bg-red-700/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg ${className}`}>
+      {children}
+    </span>
+  );
+}
+
+function GoldBadge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-md border border-yellow-500/60 bg-yellow-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-yellow-400 ${className}`}>
+      {children}
+    </span>
+  );
+}
+
 function IntroContent({ onContinue }: { onContinue: () => void }) {
   return (
     <div className="flex flex-col items-center gap-4 p-4 text-center sm:gap-6 sm:p-6 md:p-8">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-yellow-500 sm:h-16 sm:w-16">
-        <Camera className="h-6 w-6 text-white sm:h-8 sm:w-8" />
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-900/50 sm:h-18 sm:w-18">
+        <Camera className="h-7 w-7 text-white sm:h-8 sm:w-8" />
       </div>
 
-      <div className="space-y-1 sm:space-y-2">
-        <h2 className="text-lg font-bold text-foreground sm:text-xl md:text-2xl">
+      <div className="space-y-2">
+        <h2 className="text-xl font-black uppercase tracking-tight text-white sm:text-2xl md:text-3xl">
           Activa Tu Cámara
         </h2>
         <p className="max-w-sm text-xs text-muted-foreground sm:text-sm md:text-base">
@@ -86,10 +112,14 @@ function IntroContent({ onContinue }: { onContinue: () => void }) {
         </p>
       </div>
 
+      <PromoBadge>
+        <span>⚽</span> Visita y Gana <span>⚽</span>
+      </PromoBadge>
+
       <Button
         size="lg"
         onClick={onContinue}
-        className="gap-2 bg-gradient-to-r from-red-500 to-orange-500 px-6 py-5 text-base font-semibold text-white sm:px-8 sm:py-6 sm:text-lg"
+        className="gap-2 bg-red-600 px-6 py-5 text-base font-bold uppercase tracking-wide text-white hover:bg-red-700 sm:px-8 sm:py-6 sm:text-lg"
         data-testid="button-comenzar"
       >
         <Camera className="h-5 w-5" />
@@ -104,12 +134,15 @@ function TeamContent({ onContinue }: { onContinue: () => void }) {
 
   return (
     <div className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 md:p-6">
-      <div className="text-center">
-        <h2 className="text-base font-bold text-foreground sm:text-lg md:text-xl">
-          Selecciona Tu Equipo
+      <div className="text-center space-y-2">
+        <PromoBadge>
+          <Trophy className="h-3 w-3" /> Elige Tu Equipo
+        </PromoBadge>
+        <h2 className="text-lg font-black uppercase tracking-tight text-white sm:text-xl md:text-2xl">
+          Selecciona Tu Selección
         </h2>
         <p className="text-xs text-muted-foreground sm:text-sm">
-          Elige el equipo con el que quieres transformar tu foto
+          ¿Con quién vas al Mundial?
         </p>
       </div>
 
@@ -121,16 +154,16 @@ function TeamContent({ onContinue }: { onContinue: () => void }) {
           return (
             <button
               key={team}
-              className={`relative flex flex-col items-center gap-0.5 rounded-md p-1.5 transition-all hover-elevate active-elevate-2 sm:gap-1 sm:p-2 md:p-3 ${
+              className={`relative flex flex-col items-center gap-0.5 rounded-lg p-1.5 transition-all hover-elevate active-elevate-2 sm:gap-1 sm:p-2 md:p-3 ${
                 isSelected
-                  ? "bg-primary/20 ring-2 ring-primary"
-                  : "bg-muted/50"
+                  ? "bg-red-700/30 ring-2 ring-red-500"
+                  : "bg-white/5 hover:bg-white/10 border border-green-800/40"
               }`}
               onClick={() => setSelectedTeam(team)}
               data-testid={`card-team-${team}`}
             >
               {isSelected && (
-                <div className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-primary-foreground sm:-right-1 sm:-top-1 sm:h-5 sm:w-5">
+                <div className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-white sm:-right-1 sm:-top-1 sm:h-5 sm:w-5">
                   <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                 </div>
               )}
@@ -142,7 +175,7 @@ function TeamContent({ onContinue }: { onContinue: () => void }) {
                   loading="lazy"
                 />
               </div>
-              <span className="text-[10px] font-medium leading-tight sm:text-xs md:text-sm">{info.name}</span>
+              <span className="text-[10px] font-semibold leading-tight text-white/90 sm:text-xs md:text-sm">{info.name}</span>
             </button>
           );
         })}
@@ -152,7 +185,7 @@ function TeamContent({ onContinue }: { onContinue: () => void }) {
         size="lg"
         disabled={!selectedTeam}
         onClick={onContinue}
-        className="mt-1 w-full gap-2 bg-gradient-to-r from-red-500 to-orange-500 py-5 font-semibold text-white sm:mt-2 sm:py-6"
+        className="mt-1 w-full gap-2 bg-red-600 py-5 font-bold uppercase tracking-wide text-white hover:bg-red-700 disabled:opacity-40 sm:mt-2 sm:py-6"
         data-testid="button-continue"
       >
         Continuar
@@ -285,20 +318,25 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
 
   return (
     <div className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 md:p-6">
-      <div className="text-center">
-        <h2 className="text-base font-bold text-foreground sm:text-lg md:text-xl">
-          Captura Tu Foto
-        </h2>
-        <p className="text-xs text-muted-foreground sm:text-sm">
-          {isMobile ? "Toma una foto vertical para transformarla" : "Toma una foto horizontal para transformarla"}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-black uppercase tracking-tight text-white sm:text-lg md:text-xl">
+            Captura Tu Foto
+          </h2>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            {isMobile ? "Toma una foto vertical para transformarla" : "Toma una foto horizontal para transformarla"}
+          </p>
+        </div>
+        <RedBadge>
+          <Gift className="h-3 w-3" /> Visita y Gana
+        </RedBadge>
       </div>
 
       <div
-        className={`relative w-full overflow-hidden rounded-md sm:rounded-lg ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
+        className={`relative w-full overflow-hidden rounded-lg sm:rounded-xl ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
         style={{
-          borderColor: teamColors?.primary,
-          borderWidth: teamColors ? "3px" : "1px",
+          borderColor: teamColors?.primary || "#dc2626",
+          borderWidth: "3px",
           borderStyle: "solid",
         }}
         data-testid="card-camera-preview"
@@ -311,10 +349,10 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
             data-testid="img-captured-preview"
           />
         ) : hasPermission === false ? (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-muted p-4 text-center">
-            <AlertCircle className="h-10 w-10 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">{error}</p>
-            <p className="text-xs text-muted-foreground">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-green-950/80 p-4 text-center">
+            <AlertCircle className="h-10 w-10 text-red-400" />
+            <p className="text-sm text-white/70">{error}</p>
+            <p className="text-xs text-white/50">
               Por favor permite el acceso a la cámara para continuar
             </p>
           </div>
@@ -333,7 +371,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-2 top-2 bg-black/30 text-white backdrop-blur-sm"
+            className="absolute right-2 top-2 bg-black/50 text-white backdrop-blur-sm hover:bg-black/70"
             onClick={switchCamera}
             data-testid="button-switch-camera"
           >
@@ -350,7 +388,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
             <Button
               variant="outline"
               size="default"
-              className="flex-1 gap-2 sm:text-base"
+              className="flex-1 gap-2 border-green-700/50 bg-white/5 font-semibold text-white hover:bg-white/10 sm:text-base"
               onClick={retakePhoto}
               disabled={isCompressing}
               data-testid="button-retake"
@@ -360,7 +398,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
             </Button>
             <Button
               size="default"
-              className="flex-1 gap-2 bg-gradient-to-r from-red-500 to-orange-500 font-semibold text-white sm:text-base"
+              className="flex-1 gap-2 bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700 sm:text-base"
               onClick={confirmPhoto}
               disabled={isCompressing}
               data-testid="button-confirm"
@@ -383,7 +421,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
             {hasPermission && (
               <Button
                 size="default"
-                className="w-full gap-2 bg-gradient-to-r from-red-500 to-orange-500 font-semibold text-white sm:text-base"
+                className="w-full gap-2 bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700 sm:text-base"
                 onClick={capturePhoto}
                 data-testid="button-capture"
               >
@@ -442,29 +480,32 @@ function ProcessingContent({ onComplete }: { onComplete: () => void }) {
   }, [processImage]);
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4 text-center sm:gap-6 sm:p-8">
+    <div className="flex flex-col items-center gap-5 p-6 text-center sm:gap-8 sm:p-10">
       <div className="relative">
         <div
-          className="absolute inset-0 animate-ping rounded-full opacity-30"
-          style={{ backgroundColor: teamColors?.primary || "#22c55e" }}
+          className="absolute inset-0 animate-ping rounded-full opacity-25"
+          style={{ backgroundColor: teamColors?.primary || "#16a34a" }}
         />
         <div
-          className="relative flex h-14 w-14 items-center justify-center rounded-full sm:h-20 sm:w-20"
-          style={{ backgroundColor: teamColors?.primary || "#22c55e" }}
+          className="relative flex h-16 w-16 items-center justify-center rounded-full shadow-2xl sm:h-20 sm:w-20"
+          style={{ backgroundColor: teamColors?.primary || "#16a34a" }}
         >
-          <Loader2 className="h-7 w-7 animate-spin text-white sm:h-10 sm:w-10" />
+          <Loader2 className="h-8 w-8 animate-spin text-white sm:h-10 sm:w-10" />
         </div>
       </div>
 
-      <div className="space-y-1 sm:space-y-2">
+      <div className="space-y-2 sm:space-y-3">
+        <GoldBadge>
+          <Sparkles className="h-3 w-3" /> Creando Tu Retrato
+        </GoldBadge>
         <h2
-          className="text-lg font-bold text-foreground sm:text-xl"
+          className="text-xl font-black uppercase tracking-tight text-white sm:text-2xl"
           data-testid="text-processing-title"
         >
           Transformando tu pasión...
         </h2>
         <p
-          className="text-xs text-muted-foreground sm:text-sm"
+          className="text-sm text-muted-foreground sm:text-base"
           data-testid="text-processing-subtitle"
         >
           Estamos creando tu retrato mundialista
@@ -476,9 +517,9 @@ function ProcessingContent({ onComplete }: { onComplete: () => void }) {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="h-1.5 w-1.5 animate-bounce rounded-full sm:h-2 sm:w-2"
+            className="h-2 w-2 animate-bounce rounded-full sm:h-2.5 sm:w-2.5"
             style={{
-              backgroundColor: teamColors?.primary || "#22c55e",
+              backgroundColor: teamColors?.primary || "#16a34a",
               animationDelay: `${i * 0.15}s`,
             }}
           />
@@ -567,23 +608,33 @@ function ResultContent({
 
   return (
     <div className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4 md:p-6">
-      <div className="text-center">
+      <div className="text-center space-y-2">
+        {!hasError && (
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <GoldBadge>
+              <Trophy className="h-3 w-3" /> Sorteo Mensual
+            </GoldBadge>
+            <RedBadge>
+              <Sparkles className="h-3 w-3" /> Ruleta de Premios
+            </RedBadge>
+          </div>
+        )}
         <h2
-          className="text-base font-bold text-foreground sm:text-lg md:text-xl"
+          className="text-lg font-black uppercase tracking-tight text-white sm:text-xl md:text-2xl"
           data-testid="text-result-title"
         >
           {hasError ? "Ocurrió un Error" : "Tu Retrato Mundialista"}
         </h2>
         {selectedTeam && !hasError && (
           <p className="text-xs text-muted-foreground sm:text-sm">
-            Fan de {teamInfo[selectedTeam].name}
+            ⚽ Fan de {teamInfo[selectedTeam].name}
           </p>
         )}
       </div>
 
       {hasError ? (
         <div className="flex flex-col items-center gap-4 py-4 text-center">
-          <AlertTriangle className="h-12 w-12 text-destructive" />
+          <AlertTriangle className="h-12 w-12 text-red-400" />
           <p className="text-sm text-muted-foreground">
             {error || "Hubo un problema al procesar tu foto."}
           </p>
@@ -591,7 +642,7 @@ function ResultContent({
             <img
               src={capturedImage}
               alt="Foto original"
-              className={`w-full max-w-sm rounded-md ${isMobile ? "aspect-[3/4] object-contain bg-black" : "aspect-video object-cover"}`}
+              className={`w-full max-w-sm rounded-lg ${isMobile ? "aspect-[3/4] object-contain bg-black" : "aspect-video object-cover"}`}
               data-testid="img-original-fallback"
             />
           )}
@@ -599,10 +650,10 @@ function ResultContent({
       ) : (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
           <div
-            className={`relative w-full overflow-hidden rounded-lg sm:flex-1 ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
+            className={`relative w-full overflow-hidden rounded-xl sm:flex-1 ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
             style={{
-              borderColor: teamColors?.primary,
-              borderWidth: teamColors ? "3px" : "1px",
+              borderColor: teamColors?.primary || "#dc2626",
+              borderWidth: "3px",
               borderStyle: "solid",
             }}
             data-testid="card-result-image"
@@ -613,15 +664,20 @@ function ResultContent({
               className={`h-full w-full ${isMobile ? "object-contain bg-black" : "object-cover"}`}
               data-testid="img-result"
             />
+            <div className="absolute bottom-2 left-2">
+              <span className="rounded-full bg-black/60 px-2 py-1 text-xs font-bold text-white backdrop-blur-sm">
+                ⚽ Milenium
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col items-center gap-2 rounded-lg border bg-white p-3 sm:w-auto">
+          <div className="flex flex-col items-center gap-2 rounded-xl border border-green-700/40 bg-green-950/60 p-3 backdrop-blur-sm sm:w-auto">
             <img
               src={qrGallery}
               alt="QR Galería"
-              className="h-20 w-20 sm:h-24 sm:w-24"
+              className="h-20 w-20 rounded-lg sm:h-24 sm:w-24"
               data-testid="img-qr-gallery"
             />
-            <p className="text-center text-[10px] text-muted-foreground sm:text-xs">
+            <p className="text-center text-[10px] font-semibold uppercase tracking-wide text-green-400 sm:text-xs">
               Escanea para ver<br />todas las fotos
             </p>
           </div>
@@ -633,7 +689,7 @@ function ResultContent({
           <div className="flex gap-2 sm:gap-3">
             <Button
               size="default"
-              className="flex-1 gap-2 bg-gradient-to-r from-red-500 to-orange-500 font-semibold text-white sm:text-base"
+              className="flex-1 gap-2 bg-red-600 font-bold uppercase tracking-wide text-white hover:bg-red-700 sm:text-base"
               onClick={handleDownload}
               data-testid="button-download"
             >
@@ -643,7 +699,7 @@ function ResultContent({
             <Button
               size="default"
               variant="outline"
-              className="gap-2"
+              className="gap-2 border-green-700/50 bg-white/5 text-white hover:bg-white/10"
               onClick={handleShare}
               data-testid="button-share"
             >
@@ -655,7 +711,7 @@ function ResultContent({
         <Button
           size="default"
           variant={hasError ? "default" : "outline"}
-          className={`w-full gap-2 sm:text-base ${hasError ? "bg-gradient-to-r from-red-500 to-orange-500 text-white" : ""}`}
+          className={`w-full gap-2 sm:text-base ${hasError ? "bg-red-600 text-white hover:bg-red-700 font-bold uppercase tracking-wide" : "border-green-700/50 bg-white/5 text-white hover:bg-white/10"}`}
           onClick={onRetry}
           data-testid="button-retry"
         >
@@ -666,7 +722,7 @@ function ResultContent({
         <Button
           size="default"
           variant="ghost"
-          className="w-full gap-2 sm:text-base"
+          className="w-full gap-2 text-white/60 hover:bg-white/5 hover:text-white sm:text-base"
           onClick={onHome}
           data-testid="button-home"
         >
@@ -724,7 +780,8 @@ export default function SingleFlowPage() {
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+      <div className="fixed inset-0 bg-gradient-to-b from-green-950/88 via-green-900/70 to-green-950/92" />
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(22,101,52,0.3)_0%,_transparent_70%)]" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <header className="flex items-center justify-between gap-2 px-3 py-2 sm:px-4 sm:py-4 md:px-8 md:py-6">
@@ -745,37 +802,48 @@ export default function SingleFlowPage() {
         </header>
 
         <main className="flex flex-1 flex-col items-center justify-center px-2 py-2 sm:px-4 sm:py-4 md:py-8">
-          <div className="mb-3 text-center sm:mb-6 md:mb-8">
-            <Sparkles className="mx-auto mb-1 h-4 w-4 text-yellow-400 sm:mb-2 sm:h-6 sm:w-6" />
+          <div className="mb-3 text-center sm:mb-5 md:mb-7">
+            <p className="mb-1 text-xs italic font-medium text-green-300/80 sm:text-sm">
+              El próximo gol es tuyo —
+            </p>
             <h1
-              className="text-lg font-bold tracking-tight text-white drop-shadow-lg sm:text-2xl md:text-4xl lg:text-5xl"
+              className="text-2xl font-black uppercase tracking-tight text-white drop-shadow-2xl sm:text-3xl md:text-5xl lg:text-6xl"
               data-testid="text-headline"
             >
-              LEYENDA DEL MUNDIAL
+              LEYENDA DEL{" "}
+              <span className="text-red-500 drop-shadow-[0_2px_8px_rgba(220,38,38,0.6)]">
+                MUNDIAL
+              </span>
             </h1>
-            <div className="mx-auto my-1 h-0.5 w-12 bg-gradient-to-r from-green-500 to-yellow-500 sm:my-2 sm:h-1 sm:w-16" />
+            <div className="mx-auto my-2 flex items-center justify-center gap-2 sm:my-3">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-green-500 sm:w-12" />
+              <PromoBadge>
+                ⚽ Bonos Futboleros ⚽
+              </PromoBadge>
+              <div className="h-px w-8 bg-gradient-to-l from-transparent to-green-500 sm:w-12" />
+            </div>
             <p
-              className="text-xs text-white/80 sm:text-sm md:text-base"
+              className="text-xs text-white/70 sm:text-sm md:text-base"
               data-testid="text-subheadline"
             >
               Vive la experiencia del Mundial con Milenium.
             </p>
           </div>
 
-          <Card className="w-full max-w-sm bg-background/95 backdrop-blur-md sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
+          <Card className="w-full max-w-sm border-green-700/30 bg-green-950/75 backdrop-blur-md sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
             {renderStepContent()}
           </Card>
         </main>
 
         <footer className="py-2 text-center sm:py-4">
-          <p className="flex items-center justify-center gap-1 text-[10px] text-white/50 sm:gap-2 sm:text-xs">
+          <p className="flex items-center justify-center gap-1 text-[10px] text-white/40 sm:gap-2 sm:text-xs">
             <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             Potenciado por Tecnología de COHETE BRANDS
             <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
           </p>
           <button
             onClick={() => navigate("/tus-imagenes")}
-            className="mt-1 text-[10px] text-white/20 transition-colors hover:text-white/40 sm:mt-2 sm:text-xs"
+            className="mt-1 text-[10px] text-white/15 transition-colors hover:text-white/35 sm:mt-2 sm:text-xs"
             data-testid="link-admin"
           >
             Admin
