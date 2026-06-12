@@ -17,3 +17,9 @@ id = "6Lv3eCla4f0YhQmxZ2Uiw"
 uri = "file://attached_assets/generated_images/qr_galeria_mundial.png"
 type = "image"
 title = "QR Galería — mundial-ia-milenium-napa.replit.app/images"
+
+[[outputs]]
+id = "cFNy16UkMEWqCfyaN1ksc"
+uri = "file://attached_assets/qr-images-gallery.png"
+type = "image"
+title = "QR Galería Mundial — Valle de Napa"
