@@ -98,99 +98,43 @@ function GoldBadge({ children, className = "" }: { children: React.ReactNode; cl
 
 function ValleDeNapaLogo({ className = "" }: { className?: string }) {
   return (
-    <div className={`flex flex-col items-center leading-none ${className}`} data-testid="img-valle-de-napa-logo">
+    <div
+      className={`flex flex-col items-center leading-none rounded-xl px-3 py-1.5 ${className}`}
+      style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+      data-testid="img-valle-de-napa-logo"
+    >
       <span
-        className="text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)]"
-        style={{ fontFamily: "'Dancing Script', cursive", fontSize: "clamp(1.1rem, 3vw, 1.6rem)", fontWeight: 700, lineHeight: 1.1 }}
+        className="text-white"
+        style={{
+          fontFamily: "'Dancing Script', cursive",
+          fontSize: "clamp(1.1rem, 3vw, 1.6rem)",
+          fontWeight: 700,
+          lineHeight: 1.1,
+          textShadow: '0 2px 10px rgba(0,0,0,1), 0 0px 20px rgba(0,0,0,0.8)',
+        }}
       >
         Valle de Napa
       </span>
-      <span className="mt-0.5 rounded-sm bg-white/90 px-2 py-px text-[8px] font-black uppercase tracking-[0.2em] text-green-900 sm:text-[9px]">
+      <span className="mt-0.5 rounded-sm bg-white/95 px-2 py-px text-[8px] font-black uppercase tracking-[0.2em] text-green-900 sm:text-[9px]">
         RESIDENCIAL
       </span>
     </div>
   );
 }
 
-function EventPanel() {
-  return (
-    <div className="w-full overflow-hidden rounded-xl" style={{ background: 'linear-gradient(135deg, #0d3d28 0%, #145c3a 60%, #0d3d28 100%)' }}>
-      <div className="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
-        <div className="flex flex-col items-center gap-1.5">
-          <div className="flex items-center gap-1 rounded-md bg-yellow-400/20 border border-yellow-400/40 px-2 py-1">
-            <Gift className="h-3 w-3 text-yellow-300 sm:h-3.5 sm:w-3.5" />
-            <span className="text-[9px] font-black uppercase tracking-wider text-yellow-300 sm:text-[10px]">Visita<br />y Gana</span>
-          </div>
-          <div
-            className="flex h-10 w-9 flex-col items-center justify-center rounded-md shadow-md sm:h-11 sm:w-10"
-            style={{ background: 'linear-gradient(160deg, #006847 0%, #006847 45%, #ffffff 45%, #ffffff 55%, #ce1126 55%, #ce1126 100%)' }}
-            aria-hidden
-          >
-            <div className="mt-1 h-2.5 w-5 rounded-b-sm bg-white/30" style={{ marginTop: '-2px' }} />
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-black text-white drop-shadow-lg sm:text-4xl">13</span>
-            <span className="text-base font-semibold text-white/80 sm:text-lg">&</span>
-            <span className="text-3xl font-black text-white drop-shadow-lg sm:text-4xl">14</span>
-          </div>
-          <span className="text-xs font-bold uppercase tracking-widest text-white/80 sm:text-sm">
-            de Junio
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <div className="relative flex h-14 w-14 items-center justify-center rounded-full border-2 border-yellow-400/70 bg-red-700/80 shadow-lg sm:h-16 sm:w-16">
-            <div className="absolute inset-0 animate-pulse rounded-full bg-yellow-400/10" />
-            <div className="flex flex-col items-center leading-none">
-              <span className="text-[8px] font-black uppercase tracking-tight text-yellow-300 sm:text-[9px]">Ruleta</span>
-              <span className="text-[8px] font-black uppercase tracking-tight text-yellow-300 sm:text-[9px]">de</span>
-              <span className="text-[8px] font-black uppercase tracking-tight text-yellow-300 sm:text-[9px]">Premios</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-white/10 bg-black/20 px-3 pb-2.5 pt-2 sm:px-4">
-        <div className="flex items-center gap-2">
-          <div>
-            <p className="text-[11px] font-black uppercase tracking-wider text-white sm:text-xs">
-              Sorteo Mensual
-            </p>
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-green-300 sm:text-[11px]">
-              Visítanos y Participa
-            </p>
-          </div>
-          <div className="ml-auto text-right">
-            <p className="text-[10px] text-white/70 sm:text-[11px]">
-              Smart TV 60" y Jersey de la selección.
-            </p>
-          </div>
-        </div>
-        <p className="mt-1 text-[9px] text-white/40 sm:text-[10px]">
-          Consulta bases y condiciones con un asesor.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function IntroContent({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-4 p-4 text-center sm:gap-5 sm:p-5 md:p-6">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-900/50 sm:h-[4.5rem] sm:w-[4.5rem]">
-        <Camera className="h-7 w-7 text-white sm:h-8 sm:w-8" />
+    <div className="flex flex-col items-center gap-3 p-4 text-center sm:gap-4 sm:p-5">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-900/50 sm:h-14 sm:w-14">
+        <Camera className="h-6 w-6 text-white sm:h-7 sm:w-7" />
       </div>
 
-      <div className="space-y-2">
-        <h2 className="text-xl font-black uppercase tracking-tight text-white sm:text-2xl md:text-3xl">
+      <div className="space-y-1.5">
+        <h2 className="text-lg font-black uppercase tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:text-xl md:text-2xl">
           Tu Foto del Mundial
         </h2>
-        <p className="max-w-sm text-xs text-muted-foreground sm:text-sm md:text-base">
-          Toma una selfie con tu cámara o sube una foto desde tu galería y
-          te convertiremos en leyenda del Mundial.
+        <p className="max-w-sm text-xs text-white/70 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] sm:text-sm">
+          Toma una selfie o sube una foto y te convertiremos en leyenda del Mundial.
         </p>
       </div>
 
@@ -198,22 +142,15 @@ function IntroContent({ onContinue }: { onContinue: () => void }) {
         <span>⚽</span> Visita y Gana <span>⚽</span>
       </PromoBadge>
 
-      <div className="flex w-full max-w-xs flex-col gap-2">
-        <Button
-          size="lg"
-          onClick={onContinue}
-          className="w-full gap-2 bg-red-600 px-6 py-5 text-base font-bold uppercase tracking-wide text-white hover:bg-red-700 sm:py-6 sm:text-lg"
-          data-testid="button-comenzar"
-        >
-          <Camera className="h-5 w-5" />
-          ¡Comenzar!
-        </Button>
-        <p className="text-[11px] text-white/40">
-          Puedes usar cámara o subir foto desde galería
-        </p>
-      </div>
-
-      <EventPanel />
+      <Button
+        size="lg"
+        onClick={onContinue}
+        className="w-full max-w-xs gap-2 bg-red-600 py-4 text-base font-bold uppercase tracking-wide text-white hover:bg-red-700 sm:py-5 sm:text-lg"
+        data-testid="button-comenzar"
+      >
+        <Camera className="h-5 w-5" />
+        ¡Comenzar!
+      </Button>
     </div>
   );
 }
@@ -960,48 +897,53 @@ export default function SingleFlowPage() {
       <div className="fixed inset-0 bg-gradient-to-b from-black/72 via-green-950/60 to-black/80" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
-        <header className="flex items-center justify-between gap-2 px-3 py-2 sm:px-4 sm:py-4 md:px-8 md:py-6">
+        <header className="flex items-center justify-between gap-2 px-3 py-2 sm:px-4 sm:py-3">
           <img
             src={trophyImage}
             alt="Copa Mundial"
-            className="h-10 w-auto object-contain drop-shadow-lg sm:h-14 md:h-20"
+            className="h-10 w-auto object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] sm:h-12"
             data-testid="img-trophy"
           />
           <ValleDeNapaLogo />
-          <div className="text-right">
+          <div
+            className="rounded-xl px-2 py-1.5"
+            style={{ background: 'rgba(0,0,0,0.40)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+          >
             <img
               src={mileniumLogo}
               alt="Milenium"
-              className="h-7 w-auto object-contain opacity-80 sm:h-9 md:h-12"
+              className="h-7 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:h-9"
               data-testid="img-milenium-logo"
             />
           </div>
         </header>
 
-        <main className="flex flex-1 flex-col items-center justify-center px-2 py-2 sm:px-4 sm:py-4 md:py-8">
-          <div className="mb-3 text-center sm:mb-5 md:mb-7">
+        <main className="flex flex-1 flex-col items-center justify-center px-2 py-1 sm:px-4 sm:py-2">
+          <div className="mb-2 text-center sm:mb-3">
             <p
-              className="mb-0.5 drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]"
+              className="mb-0.5"
               style={{
                 fontFamily: "'Dancing Script', cursive",
-                fontSize: "clamp(1rem, 3.5vw, 1.5rem)",
+                fontSize: "clamp(0.95rem, 3vw, 1.4rem)",
                 fontWeight: 600,
-                color: "rgba(255,255,255,0.92)",
+                color: "rgba(255,255,255,0.95)",
                 lineHeight: 1.2,
+                textShadow: '0 2px 12px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.9)',
               }}
             >
               El próximo gol es tuyo —
             </p>
             <h1
-              className="text-2xl font-black uppercase tracking-tight text-white drop-shadow-2xl sm:text-3xl md:text-5xl lg:text-6xl"
+              className="text-2xl font-black uppercase tracking-tight text-white sm:text-3xl md:text-4xl"
+              style={{ textShadow: '0 2px 16px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8)' }}
               data-testid="text-headline"
             >
               LEYENDA DEL{" "}
-              <span className="text-red-500 drop-shadow-[0_2px_8px_rgba(220,38,38,0.6)]">
+              <span className="text-red-400" style={{ textShadow: '0 2px 16px rgba(0,0,0,0.95), 0 0 20px rgba(220,38,38,0.5)' }}>
                 MUNDIAL
               </span>
             </h1>
-            <div className="mx-auto my-2 flex items-center justify-center gap-2 sm:my-3">
+            <div className="mx-auto my-1.5 flex items-center justify-center gap-2 sm:my-2">
               <div className="h-px w-8 bg-gradient-to-r from-transparent to-green-500 sm:w-12" />
               <PromoBadge>
                 ⚽ Bonos Futboleros ⚽
@@ -1009,7 +951,8 @@ export default function SingleFlowPage() {
               <div className="h-px w-8 bg-gradient-to-l from-transparent to-green-500 sm:w-12" />
             </div>
             <p
-              className="text-xs text-white/70 sm:text-sm md:text-base"
+              className="text-xs text-white/80 sm:text-sm"
+              style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}
               data-testid="text-subheadline"
             >
               Vive la experiencia del Mundial con <span className="font-semibold text-green-300">Valle de Napa</span> y Milenium.
