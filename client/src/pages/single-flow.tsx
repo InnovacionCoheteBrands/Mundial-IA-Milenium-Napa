@@ -26,7 +26,7 @@ import { apiRequest } from "@/lib/queryClient";
 import trophyImage from "@assets/ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png";
 import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
 import qrGallery from "@assets/qr-images-gallery.png";
-import valleDeNapaBg from "@assets/IMG-20260611-WA0001_1781209433232.jpg";
+import worldcupBg from "@assets/generated_images/valle_napa_bg.png";
 
 const teamFlags: Record<TeamId, string> = {
   mexico: "https://flagcdn.com/w80/mx.png",
@@ -954,10 +954,10 @@ export default function SingleFlowPage() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <div
-        className="fixed inset-0 bg-cover bg-no-repeat"
-        style={{ backgroundImage: `url(${valleDeNapaBg})`, backgroundPosition: "top center" }}
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${worldcupBg})` }}
       />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-green-950/65 to-black/88" />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/72 via-green-950/60 to-black/80" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <header className="flex items-center justify-between gap-2 px-3 py-2 sm:px-4 sm:py-4 md:px-8 md:py-6">

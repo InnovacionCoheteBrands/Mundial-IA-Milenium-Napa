@@ -6,3 +6,9 @@ id = "E4l2fWUoqEDOo1S9LAVBA"
 uri = "file://attached_assets/generated_images/worldcup_background.png"
 type = "image"
 title = "worldcup background brushstrokes"
+
+[[generated]]
+id = "GHiEBz1JmkkKDj03fQOpX"
+uri = "file://client/src/assets/generated_images/valle_napa_bg.png"
+type = "image"
+title = "valle napa worldcup brush background"
