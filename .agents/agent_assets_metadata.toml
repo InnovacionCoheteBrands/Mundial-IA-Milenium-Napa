@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "E4l2fWUoqEDOo1S9LAVBA"
@@ -12,3 +11,9 @@ id = "GHiEBz1JmkkKDj03fQOpX"
 uri = "file://client/src/assets/generated_images/valle_napa_bg.png"
 type = "image"
 title = "valle napa worldcup brush background"
+
+[[outputs]]
+id = "6Lv3eCla4f0YhQmxZ2Uiw"
+uri = "file://attached_assets/generated_images/qr_galeria_mundial.png"
+type = "image"
+title = "QR Galería del Mundial — Valle de Napa"
