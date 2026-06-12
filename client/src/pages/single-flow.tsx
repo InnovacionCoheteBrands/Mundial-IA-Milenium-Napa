@@ -24,9 +24,9 @@ import { TEAMS, teamInfo, type TeamId } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import trophyImage from "@assets/ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png";
-import worldcupBg from "@assets/generated_images/worldcup_background.png";
 import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
 import qrGallery from "@assets/qr-images-gallery.png";
+import valleDeNapaBg from "@assets/IMG-20260611-WA0001_1781209433232.jpg";
 
 const teamFlags: Record<TeamId, string> = {
   mexico: "https://flagcdn.com/w80/mx.png",
@@ -116,12 +116,18 @@ function EventPanel() {
   return (
     <div className="w-full overflow-hidden rounded-xl" style={{ background: 'linear-gradient(135deg, #0d3d28 0%, #145c3a 60%, #0d3d28 100%)' }}>
       <div className="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-1.5">
           <div className="flex items-center gap-1 rounded-md bg-yellow-400/20 border border-yellow-400/40 px-2 py-1">
             <Gift className="h-3 w-3 text-yellow-300 sm:h-3.5 sm:w-3.5" />
             <span className="text-[9px] font-black uppercase tracking-wider text-yellow-300 sm:text-[10px]">Visita<br />y Gana</span>
           </div>
-          <span className="text-2xl sm:text-3xl" aria-hidden>👕</span>
+          <div
+            className="flex h-10 w-9 flex-col items-center justify-center rounded-md shadow-md sm:h-11 sm:w-10"
+            style={{ background: 'linear-gradient(160deg, #006847 0%, #006847 45%, #ffffff 45%, #ffffff 55%, #ce1126 55%, #ce1126 100%)' }}
+            aria-hidden
+          >
+            <div className="mt-1 h-2.5 w-5 rounded-b-sm bg-white/30" style={{ marginTop: '-2px' }} />
+          </div>
         </div>
 
         <div className="flex flex-col items-center">
@@ -948,10 +954,10 @@ export default function SingleFlowPage() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${worldcupBg})` }}
+        className="fixed inset-0 bg-cover bg-no-repeat"
+        style={{ backgroundImage: `url(${valleDeNapaBg})`, backgroundPosition: "top center" }}
       />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/72 via-green-950/60 to-black/80" />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-green-950/65 to-black/88" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <header className="flex items-center justify-between gap-2 px-3 py-2 sm:px-4 sm:py-4 md:px-8 md:py-6">
