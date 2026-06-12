@@ -290,10 +290,9 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
       streamRef.current = mediaStream;
       setHasPermission(true);
       setError(null);
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-      }
+      // Do NOT assign srcObject here — videoRef.current is null until
+      // hasPermission=true causes React to render the <video> element.
+      // The effect below handles it after the DOM update.
     } catch (err: any) {
       console.error("Camera error:", err);
       setHasPermission(false);
@@ -311,6 +310,15 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
     startCamera();
     return () => stopCamera();
   }, [startCamera, stopCamera]);
+
+  // After hasPermission becomes true, React renders the <video> element.
+  // This effect runs after that render and wires the stream to the video node.
+  useEffect(() => {
+    if (hasPermission === true && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [hasPermission]);
 
   const switchCamera = () => {
     setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
