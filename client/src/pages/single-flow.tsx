@@ -96,9 +96,84 @@ function GoldBadge({ children, className = "" }: { children: React.ReactNode; cl
   );
 }
 
+function ValleDeNapaLogo({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex flex-col items-center leading-none ${className}`} data-testid="img-valle-de-napa-logo">
+      <span
+        className="text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)]"
+        style={{ fontFamily: "'Dancing Script', cursive", fontSize: "clamp(1.1rem, 3vw, 1.6rem)", fontWeight: 700, lineHeight: 1.1 }}
+      >
+        Valle de Napa
+      </span>
+      <span className="mt-0.5 rounded-sm bg-white/90 px-2 py-px text-[8px] font-black uppercase tracking-[0.2em] text-green-900 sm:text-[9px]">
+        RESIDENCIAL
+      </span>
+    </div>
+  );
+}
+
+function EventPanel() {
+  return (
+    <div className="w-full overflow-hidden rounded-xl" style={{ background: 'linear-gradient(135deg, #0d3d28 0%, #145c3a 60%, #0d3d28 100%)' }}>
+      <div className="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-1 rounded-md bg-yellow-400/20 border border-yellow-400/40 px-2 py-1">
+            <Gift className="h-3 w-3 text-yellow-300 sm:h-3.5 sm:w-3.5" />
+            <span className="text-[9px] font-black uppercase tracking-wider text-yellow-300 sm:text-[10px]">Visita<br />y Gana</span>
+          </div>
+          <span className="text-2xl sm:text-3xl" aria-hidden>👕</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="flex items-baseline gap-1">
+            <span className="text-3xl font-black text-white drop-shadow-lg sm:text-4xl">13</span>
+            <span className="text-base font-semibold text-white/80 sm:text-lg">&</span>
+            <span className="text-3xl font-black text-white drop-shadow-lg sm:text-4xl">14</span>
+          </div>
+          <span className="text-xs font-bold uppercase tracking-widest text-white/80 sm:text-sm">
+            de Junio
+          </span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-full border-2 border-yellow-400/70 bg-red-700/80 shadow-lg sm:h-16 sm:w-16">
+            <div className="absolute inset-0 animate-pulse rounded-full bg-yellow-400/10" />
+            <div className="flex flex-col items-center leading-none">
+              <span className="text-[8px] font-black uppercase tracking-tight text-yellow-300 sm:text-[9px]">Ruleta</span>
+              <span className="text-[8px] font-black uppercase tracking-tight text-yellow-300 sm:text-[9px]">de</span>
+              <span className="text-[8px] font-black uppercase tracking-tight text-yellow-300 sm:text-[9px]">Premios</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10 bg-black/20 px-3 pb-2.5 pt-2 sm:px-4">
+        <div className="flex items-center gap-2">
+          <div>
+            <p className="text-[11px] font-black uppercase tracking-wider text-white sm:text-xs">
+              Sorteo Mensual
+            </p>
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-green-300 sm:text-[11px]">
+              Visítanos y Participa
+            </p>
+          </div>
+          <div className="ml-auto text-right">
+            <p className="text-[10px] text-white/70 sm:text-[11px]">
+              Smart TV 60" y Jersey de la selección.
+            </p>
+          </div>
+        </div>
+        <p className="mt-1 text-[9px] text-white/40 sm:text-[10px]">
+          Consulta bases y condiciones con un asesor.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function IntroContent({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-4 p-4 text-center sm:gap-6 sm:p-6 md:p-8">
+    <div className="flex flex-col items-center gap-4 p-4 text-center sm:gap-5 sm:p-5 md:p-6">
       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-900/50 sm:h-[4.5rem] sm:w-[4.5rem]">
         <Camera className="h-7 w-7 text-white sm:h-8 sm:w-8" />
       </div>
@@ -131,6 +206,8 @@ function IntroContent({ onContinue }: { onContinue: () => void }) {
           Puedes usar cámara o subir foto desde galería
         </p>
       </div>
+
+      <EventPanel />
     </div>
   );
 }
@@ -884,11 +961,12 @@ export default function SingleFlowPage() {
             className="h-10 w-auto object-contain drop-shadow-lg sm:h-14 md:h-20"
             data-testid="img-trophy"
           />
+          <ValleDeNapaLogo />
           <div className="text-right">
             <img
               src={mileniumLogo}
               alt="Milenium"
-              className="h-8 w-auto object-contain sm:h-10 md:h-16"
+              className="h-7 w-auto object-contain opacity-80 sm:h-9 md:h-12"
               data-testid="img-milenium-logo"
             />
           </div>
@@ -896,7 +974,16 @@ export default function SingleFlowPage() {
 
         <main className="flex flex-1 flex-col items-center justify-center px-2 py-2 sm:px-4 sm:py-4 md:py-8">
           <div className="mb-3 text-center sm:mb-5 md:mb-7">
-            <p className="mb-1 text-xs italic font-medium text-green-300/80 sm:text-sm">
+            <p
+              className="mb-0.5 drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]"
+              style={{
+                fontFamily: "'Dancing Script', cursive",
+                fontSize: "clamp(1rem, 3.5vw, 1.5rem)",
+                fontWeight: 600,
+                color: "rgba(255,255,255,0.92)",
+                lineHeight: 1.2,
+              }}
+            >
               El próximo gol es tuyo —
             </p>
             <h1
@@ -919,7 +1006,7 @@ export default function SingleFlowPage() {
               className="text-xs text-white/70 sm:text-sm md:text-base"
               data-testid="text-subheadline"
             >
-              Vive la experiencia del Mundial con Milenium.
+              Vive la experiencia del Mundial con <span className="font-semibold text-green-300">Valle de Napa</span> y Milenium.
             </p>
           </div>
 
