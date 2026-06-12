@@ -2,11 +2,36 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Download, Image as ImageIcon, Home } from "lucide-react";
+import { Download, Image as ImageIcon, Trophy } from "lucide-react";
 import { Link } from "wouter";
 import { type Transformation, teamInfo, type TeamId } from "@shared/schema";
-import backgroundImage from "@assets/Captura_de_pantalla_2026-01-05_171649_1767827562768.png";
+import worldcupBg from "@assets/generated_images/valle_napa_bg.png";
 import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
+
+function ValleDeNapaLogo({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`flex flex-col items-center leading-none rounded-xl px-3 py-1.5 ${className}`}
+      style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+    >
+      <span
+        className="text-white"
+        style={{
+          fontFamily: "'Dancing Script', cursive",
+          fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
+          fontWeight: 700,
+          lineHeight: 1.1,
+          textShadow: '0 2px 10px rgba(0,0,0,1), 0 0px 20px rgba(0,0,0,0.8)',
+        }}
+      >
+        Valle de Napa
+      </span>
+      <span className="mt-0.5 rounded-sm bg-white/95 px-2 py-px text-[8px] font-black uppercase tracking-[0.2em] text-green-900">
+        RESIDENCIAL
+      </span>
+    </div>
+  );
+}
 
 export default function ImagesGallery() {
   const { data: transformations, isLoading } = useQuery<Transformation[]>({
@@ -25,64 +50,97 @@ export default function ImagesGallery() {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen w-full overflow-hidden">
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
-      </div>
+        style={{ backgroundImage: `url(${worldcupBg})` }}
+      />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/80 via-green-950/70 to-black/85" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
-        <header className="flex items-center justify-between gap-4 p-4">
-          <img
-            src={mileniumLogo}
-            alt="Milenium"
-            className="h-8 w-auto object-contain sm:h-10"
-          />
+        <header
+          className="sticky top-0 z-50 flex items-center justify-between gap-3 px-3 py-2 sm:px-4 sm:py-3"
+          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+        >
           <Link href="/">
-            <Button variant="outline" size="sm" className="gap-2">
-              <Home className="h-4 w-4" />
-              Inicio
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1.5 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+              data-testid="link-home"
+            >
+              ← Inicio
             </Button>
           </Link>
+
+          <ValleDeNapaLogo />
+
+          <div
+            className="rounded-xl px-2 py-1.5"
+            style={{ background: 'rgba(0,0,0,0.40)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+          >
+            <img
+              src={mileniumLogo}
+              alt="Milenium"
+              className="h-7 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+            />
+          </div>
         </header>
 
-        <main className="flex-1 p-4 sm:p-6 md:p-8">
+        <main className="flex-1 px-4 py-6 sm:px-6 md:px-8">
           <div className="mx-auto max-w-6xl">
-            <h1
-              className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl"
-              data-testid="text-gallery-title"
-            >
-              Galería de Fans
-            </h1>
+            <div className="mb-6 text-center">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <Trophy className="h-5 w-5 text-yellow-400 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]" />
+                <h1
+                  className="text-xl font-black uppercase tracking-tight text-white sm:text-2xl"
+                  style={{ textShadow: '0 2px 12px rgba(0,0,0,0.95)' }}
+                  data-testid="text-gallery-title"
+                >
+                  Galería de Fans
+                </h1>
+                <Trophy className="h-5 w-5 text-yellow-400 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]" />
+              </div>
+              <p
+                className="text-xs text-white/60"
+                style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}
+              >
+                Leyendas capturadas con{" "}
+                <span className="font-semibold text-green-300">Valle de Napa</span> y Milenium
+              </p>
+            </div>
 
             {isLoading ? (
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 sm:gap-4">
                 {Array.from({ length: 8 }).map((_, i) => (
-                  <Skeleton key={i} className="aspect-square w-full rounded-md" />
+                  <Skeleton key={i} className="aspect-square w-full rounded-xl bg-white/10" />
                 ))}
               </div>
             ) : !transformations || transformations.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <ImageIcon className="mb-4 h-16 w-16 text-white/50" />
+                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-900/60 backdrop-blur-sm">
+                  <ImageIcon className="h-10 w-10 text-white/40" />
+                </div>
                 <h2
-                  className="mb-2 text-xl font-semibold text-white"
+                  className="mb-2 text-lg font-semibold text-white drop-shadow-lg"
                   data-testid="text-empty-state"
                 >
                   Sin imágenes aún
                 </h2>
-                <p className="text-white/70">
+                <p className="text-sm text-white/50">
                   Las transformaciones realizadas aparecerán aquí
                 </p>
               </div>
             ) : (
               <>
-                <p className="mb-6 text-center text-white/70">
-                  {transformations.length} imágenes guardadas
+                <p
+                  className="mb-5 text-center text-sm text-white/60"
+                  style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}
+                >
+                  {transformations.length} leyenda{transformations.length !== 1 ? "s" : ""} capturada{transformations.length !== 1 ? "s" : ""}
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 sm:gap-4">
                   {transformations.map((transformation) => {
                     const team = transformation.team as TeamId;
                     const teamData = teamInfo[team];
@@ -90,13 +148,13 @@ export default function ImagesGallery() {
                     return (
                       <Card
                         key={transformation.id}
-                        className="group relative aspect-square overflow-hidden"
+                        className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-black/20 backdrop-blur-sm"
                         data-testid={`card-image-${transformation.id}`}
                       >
                         <img
                           src={transformation.transformedImageUrl}
                           alt={`Fan de ${teamData?.name || team}`}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
                         />
 
@@ -104,7 +162,7 @@ export default function ImagesGallery() {
                           <Button
                             size="icon"
                             variant="ghost"
-                            className="text-white"
+                            className="text-white hover:bg-white/20"
                             onClick={() =>
                               handleDownload(
                                 transformation.transformedImageUrl,
@@ -118,8 +176,8 @@ export default function ImagesGallery() {
                           </Button>
                         </div>
 
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-2">
-                          <p className="text-xs font-medium text-white">
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent px-3 py-2">
+                          <p className="text-xs font-semibold text-white">
                             {teamData?.name || team}
                           </p>
                         </div>
@@ -131,6 +189,12 @@ export default function ImagesGallery() {
             )}
           </div>
         </main>
+
+        <footer className="py-3 text-center">
+          <p className="text-[10px] text-white/30">
+            Potenciado por Tecnología de COHETE BRANDS
+          </p>
+        </footer>
       </div>
     </div>
   );
