@@ -75,63 +75,82 @@ function getAIClient() {
 
 function getTransformationPrompt(team: TeamId): string {
   const teamData = teamInfo[team];
-  
-  return `Transform this photo into a World Cup celebration scene. The photo may contain 1, 2, 3, 4, 5 or more people - ALL must be preserved and transformed.
 
-=== ABSOLUTE PROHIBITIONS - NEVER DO ANY OF THESE ===
+  return `You are a precision image editing tool. Your ONLY task is to edit the provided photo following the exact rules below. You are NOT a creative generator — you are an editor that must preserve the original with surgical precision.
+
+=== INPUT ANALYSIS (Do this first) ===
+1. Count the exact number of people in the photo.
+2. Identify each person's face, body type, pose, and body position.
+3. Identify the original background.
+4. Output must contain EXACTLY the same people in the EXACT same positions.
+
+=== ABSOLUTE PROHIBITIONS — ZERO TOLERANCE ===
 PEOPLE:
-- NEVER remove, delete, hide, or crop out ANY person
-- NEVER add new people that weren't in the original
-- NEVER reduce the count of people in the image
+- NEVER remove, delete, hide, or crop out ANY person.
+- NEVER add new people.
+- NEVER change the count of people.
+- NEVER change anyone's relative position to others.
 
-FACES (CRITICAL - DO NOT MODIFY):
-- NEVER change, replace, alter, or regenerate ANY face
-- NEVER modify facial features, bone structure, jaw, nose, eyes, mouth
-- NEVER change skin tone, skin texture, or complexion
-- NEVER change eye color or eye shape
-- NEVER remove or add facial hair (beard, mustache, stubble)
-- NEVER generate synthetic or AI faces - use ONLY the original faces
-- NEVER swap faces between people
+FACES — MOST CRITICAL:
+- NEVER change, replace, alter, or regenerate ANY face.
+- NEVER modify facial features: eyes, nose, mouth, jaw, cheekbones, forehead.
+- NEVER change skin tone, skin texture, or complexion.
+- NEVER change eye color, eye shape, or gaze direction.
+- NEVER add or remove facial hair (beard, mustache, stubble).
+- NEVER generate synthetic/AI faces. Use ONLY the original faces.
+- NEVER swap faces between people.
+- Faces must remain IDENTICAL pixel-for-pixel.
 
-BODIES (CRITICAL - DO NOT MODIFY):
-- NEVER change body type, body shape, or body size
-- NEVER change height proportions between people
-- NEVER change weight or build (thin, average, heavy)
-- NEVER change shoulder width or body frame
-- NEVER alter arms, hands, or body posture significantly
+BODY & POSE — CRITICAL:
+- NEVER change body type, body shape, or body size.
+- NEVER change weight or build.
+- NEVER change height proportions.
+- NEVER change shoulder width or body frame.
+- NEVER change torso position, angle, or rotation.
+- NEVER change leg position, stance, or posture.
+- NEVER change head position or angle.
+- NEVER change hand shape, finger count, or hand structure.
+- NEVER change overall body pose.
 
-=== WHAT TO PRESERVE FOR EACH PERSON ===
-For EVERY person (whether 1 person or 5+ people), keep EXACTLY:
-- Their EXACT face pixel-for-pixel from the input photo
-- Their exact body type, size, and proportions
-- Their exact skin tone and complexion
-- Their exact hairstyle, hair color, hair length
-- Their exact pose and body position
-- Their glasses, jewelry, or accessories if visible
-- Their relative positions to each other
+=== THE ONLY SINGLE EXCEPTION — ONE ARM FOR THE TROPHY ===
+If and ONLY IF there is a person whose arm position is already suitable for holding a trophy, you may reposition ONLY ONE of their arms to naturally hold a FIFA World Cup trophy. All other body parts must remain EXACTLY as in the original.
+- If the arm position is already close, make minimal adjustment.
+- If the arm is not suitable, do NOT reposition it.
+- Never change the other arm.
+- Never change the hand's shape or fingers.
+- Never change the shoulder position.
+- Never change the torso angle.
 
-=== ONLY THESE CHANGES ARE ALLOWED ===
+=== THE EXACT THREE CHANGES ALLOWED ===
 1. CLOTHING ONLY:
-   - Replace ONLY the clothing with ${teamData.name} national team jersey
-   - Every single person gets the jersey - NO EXCEPTIONS
-   - Jersey must fit naturally on each person's actual body
+   - Replace ONLY the clothing with the ${teamData.name} national team jersey.
+   - Every single person must get the jersey.
+   - The jersey must fit naturally on the person's actual body.
+   - Keep body proportions underneath the jersey.
 
-2. ONE TROPHY:
-   - Add FIFA World Cup Trophy held by ONE person
-   - Other people celebrate around naturally
+2. ONE TROPHY (Optional — only if arm positioning permits):
+   - Add ONE FIFA World Cup trophy.
+   - Held by ONE person if their arm naturally allows it.
+   - If arm does not naturally allow, the trophy can be placed nearby or celebrated with.
+   - Other people celebrate naturally without changing their pose.
 
 3. BACKGROUND ONLY:
-   - Replace background with World Cup stadium
-   - Stadium, green pitch, lights, confetti
+   - Replace ONLY the background with a World Cup stadium.
+   - Include: green pitch, stadium lights, confetti, crowd.
+   - Do NOT change people positions.
 
 === VERIFICATION CHECKLIST ===
-Count people in input → Output must have SAME count
-Each face → Must be IDENTICAL to input (not similar - IDENTICAL)
-Each body → Same type/size as input
-Each person → Wearing ${teamData.name} jersey
-Original clothing → None visible
+- Count people in input = Count people in output. EXACT same number.
+- Each face = IDENTICAL to input. Compare face-by-face.
+- Each body type = Same.
+- Each pose = Same (except the ONE arm exception if applicable).
+- Each person = Wearing ${teamData.name} jersey.
+- Original clothing = Not visible.
+- Background = World Cup stadium.
 
-PRIORITY: If anything conflicts, preserve faces and bodies EXACTLY as they appear in the input photo.`;
+If there is ANY conflict between preserving the original and applying the edit, PRESERVE THE ORIGINAL. Never compromise on identity, face, body, or pose.
+
+=== MODEL: gemini-3-pro-image-preview. OUTPUT: Edited photo.`;
 }
 
 async function transformImage(originalImageBase64: string, team: TeamId): Promise<string> {
