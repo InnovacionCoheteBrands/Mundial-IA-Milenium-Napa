@@ -9,7 +9,7 @@ import fs from "fs";
 
 const MILENIUM_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium__1767829210784.png");
 const TROPHY_LOGO_PATH = path.join(process.cwd(), "attached_assets", "ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png");
-const TRANSFORM_PIPELINE_VERSION = "2026-06-16-prompt-watermark-v2";
+const TRANSFORM_PIPELINE_VERSION = "2026-06-16-prompt-watermark-v3";
 
 function logTransformRuntimeStatus() {
   const assetsStatus = {
@@ -23,48 +23,43 @@ function logTransformRuntimeStatus() {
 }
 
 function createValleDeNapaSvg(width: number): Buffer {
-  const height = Math.round(width * 0.42);
-  const residencialFontSize = Math.max(12, Math.round(width * 0.09));
-  const residPaddingX = Math.max(10, Math.round(width * 0.045));
-  const residPaddingY = Math.max(4, Math.round(height * 0.04));
+  const height = Math.round(width * 0.28);
+  const titleSize = Math.max(18, Math.round(width * 0.135));
+  const subtitleSize = Math.max(10, Math.round(width * 0.05));
 
   const svg = `
     <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="rgba(0,0,0,0.9)"/>
+        <linearGradient id="titleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f3e8d0"/>
+          <stop offset="50%" stop-color="#ffffff"/>
+          <stop offset="100%" stop-color="#dcc19b"/>
+        </linearGradient>
+        <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.8)"/>
         </filter>
       </defs>
-      <g filter="url(#shadow)">
+      <g filter="url(#softShadow)">
         <text
           x="${width / 2}"
-          y="${Math.round(height * 0.44)}"
+          y="${Math.round(height * 0.42)}"
           text-anchor="middle"
-          fill="#ffffff"
-          font-size="${Math.round(width * 0.22)}"
+          fill="url(#titleGradient)"
+          font-size="${titleSize}"
           font-weight="700"
           font-family="'Brush Script MT','Segoe Script','Lucida Handwriting',cursive"
         >
           Valle de Napa
         </text>
-        <rect
-          x="${Math.round(width * 0.24)}"
-          y="${Math.round(height * 0.58)}"
-          rx="4"
-          ry="4"
-          width="${Math.round(width * 0.52)}"
-          height="${Math.round(height * 0.22)}"
-          fill="rgba(255,255,255,0.96)"
-        />
         <text
           x="${width / 2}"
-          y="${Math.round(height * 0.73)}"
+          y="${Math.round(height * 0.77)}"
           text-anchor="middle"
-          fill="#0f5c34"
-          font-size="${residencialFontSize}"
-          font-weight="900"
-          letter-spacing="3"
-          font-family="'Arial','Helvetica',sans-serif"
+          fill="#efe3c9"
+          font-size="${subtitleSize}"
+          font-weight="700"
+          letter-spacing="4"
+          font-family="'Trajan Pro','Georgia','Times New Roman',serif"
         >
           RESIDENCIAL
         </text>
@@ -82,6 +77,7 @@ async function prepareOverlay(
     maxHeight: number;
     tint?: string;
     boost?: boolean;
+    shadow?: boolean;
   }
 ): Promise<Buffer> {
   const base = sharp(input).trim().resize(options.maxWidth, options.maxHeight, { fit: "inside" });
@@ -96,6 +92,12 @@ async function prepareOverlay(
   const overlayMeta = await sharp(overlayBuffer).metadata();
   const width = overlayMeta.width || options.maxWidth;
   const height = overlayMeta.height || options.maxHeight;
+  const shouldAddShadow = options.shadow !== false;
+
+  if (!shouldAddShadow) {
+    return overlayBuffer;
+  }
+
   const shadowPadding = Math.max(12, Math.round(Math.min(width, height) * 0.18));
 
   const shadowAlpha = await sharp(overlayBuffer)
@@ -141,6 +143,127 @@ async function prepareOverlay(
   return shadowBuffer;
 }
 
+async function createBrandStrip(imageWidth: number, imageHeight: number): Promise<{
+  input: Buffer;
+  left: number;
+  top: number;
+}> {
+  const stripWidth = Math.round(imageWidth * 0.6);
+  const stripHeight = Math.round(imageHeight * 0.12);
+  const radius = Math.round(stripHeight * 0.18);
+  const innerPaddingX = Math.round(stripWidth * 0.04);
+  const innerPaddingY = Math.round(stripHeight * 0.16);
+  const gap = Math.round(stripWidth * 0.022);
+  const separatorWidth = Math.max(1, Math.round(stripWidth * 0.002));
+  const trophySlotWidth = Math.round(stripWidth * 0.12);
+  const mileniumSlotWidth = Math.round(stripWidth * 0.2);
+  const centerSlotWidth = stripWidth - innerPaddingX * 2 - trophySlotWidth - mileniumSlotWidth - separatorWidth * 2 - gap * 4;
+
+  const panelBuffer = Buffer.from(`
+    <svg width="${stripWidth}" height="${stripHeight}" viewBox="0 0 ${stripWidth} ${stripHeight}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(8,8,8,0.8)"/>
+          <stop offset="50%" stop-color="rgba(28,22,17,0.62)"/>
+          <stop offset="100%" stop-color="rgba(8,8,8,0.8)"/>
+        </linearGradient>
+        <linearGradient id="strokeBg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.1)"/>
+          <stop offset="50%" stop-color="rgba(228,197,148,0.45)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0.1)"/>
+        </linearGradient>
+        <filter id="panelShadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="rgba(0,0,0,0.45)"/>
+        </filter>
+      </defs>
+      <rect x="0" y="0" width="${stripWidth}" height="${stripHeight}" rx="${radius}" fill="url(#panelBg)" filter="url(#panelShadow)"/>
+      <rect x="0.5" y="0.5" width="${stripWidth - 1}" height="${stripHeight - 1}" rx="${Math.max(0, radius - 1)}" fill="none" stroke="url(#strokeBg)" stroke-width="1"/>
+    </svg>
+  `);
+
+  const trophyBuffer = await prepareOverlay(fs.readFileSync(TROPHY_LOGO_PATH), {
+    maxWidth: Math.round(trophySlotWidth * 0.72),
+    maxHeight: Math.round(stripHeight * 0.7),
+    tint: "#efe8dd",
+    shadow: false,
+  });
+  const valleBuffer = await prepareOverlay(createValleDeNapaSvg(Math.round(centerSlotWidth * 0.78)), {
+    maxWidth: Math.round(centerSlotWidth * 0.78),
+    maxHeight: Math.round(stripHeight * 0.54),
+    shadow: false,
+  });
+  const mileniumBuffer = await prepareOverlay(fs.readFileSync(MILENIUM_LOGO_PATH), {
+    maxWidth: Math.round(mileniumSlotWidth * 0.84),
+    maxHeight: Math.round(stripHeight * 0.72),
+    shadow: false,
+  });
+
+  const trophyMeta = await sharp(trophyBuffer).metadata();
+  const valleMeta = await sharp(valleBuffer).metadata();
+  const mileniumMeta = await sharp(mileniumBuffer).metadata();
+
+  const contentHeight = stripHeight - innerPaddingY * 2;
+  const trophyWidth = trophyMeta.width || Math.round(trophySlotWidth * 0.72);
+  const trophyHeight = trophyMeta.height || Math.round(stripHeight * 0.7);
+  const valleWidth = valleMeta.width || Math.round(centerSlotWidth * 0.78);
+  const valleHeight = valleMeta.height || Math.round(stripHeight * 0.54);
+  const mileniumWidth = mileniumMeta.width || Math.round(mileniumSlotWidth * 0.84);
+  const mileniumHeight = mileniumMeta.height || Math.round(stripHeight * 0.72);
+
+  const separatorOneX = innerPaddingX + trophySlotWidth + gap;
+  const separatorTwoX = stripWidth - innerPaddingX - mileniumSlotWidth - gap - separatorWidth;
+  const separatorTop = Math.round(stripHeight * 0.2);
+  const separatorHeight = Math.round(stripHeight * 0.6);
+  const centerStartX = separatorOneX + separatorWidth + gap;
+  const mileniumStartX = separatorTwoX + separatorWidth + gap;
+
+  const separatorBuffer = await sharp({
+    create: {
+      width: separatorWidth,
+      height: separatorHeight,
+      channels: 4,
+      background: { r: 224, g: 201, b: 167, alpha: 0.58 },
+    },
+  }).png().toBuffer();
+
+  const stripBuffer = await sharp(panelBuffer)
+    .composite([
+      {
+        input: trophyBuffer,
+        left: innerPaddingX + Math.round((trophySlotWidth - trophyWidth) / 2),
+        top: innerPaddingY + Math.round((contentHeight - trophyHeight) / 2),
+      },
+      {
+        input: separatorBuffer,
+        left: separatorOneX,
+        top: separatorTop,
+      },
+      {
+        input: valleBuffer,
+        left: centerStartX + Math.round((centerSlotWidth - valleWidth) / 2),
+        top: innerPaddingY + Math.round((contentHeight - valleHeight) / 2),
+      },
+      {
+        input: separatorBuffer,
+        left: separatorTwoX,
+        top: separatorTop,
+      },
+      {
+        input: mileniumBuffer,
+        left: mileniumStartX + Math.round((mileniumSlotWidth - mileniumWidth) / 2),
+        top: innerPaddingY + Math.round((contentHeight - mileniumHeight) / 2),
+      },
+    ])
+    .png()
+    .toBuffer();
+
+  return {
+    input: stripBuffer,
+    left: Math.round((imageWidth - stripWidth) / 2),
+    top: imageHeight - stripHeight - Math.round(imageHeight * 0.045),
+  };
+}
+
 async function addWatermarkToImage(imageBase64: string): Promise<string> {
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
@@ -154,63 +277,14 @@ async function addWatermarkToImage(imageBase64: string): Promise<string> {
       return imageBase64;
     }
 
-    const padding = Math.floor(Math.min(metadata.width, metadata.height) * 0.03);
-
-    const mileniumLogoBuffer = fs.readFileSync(MILENIUM_LOGO_PATH);
-    const trophyLogoBuffer = fs.readFileSync(TROPHY_LOGO_PATH);
-    const mileniumMaxWidth = Math.floor(metadata.width * 0.2);
-    const mileniumMaxHeight = Math.floor(metadata.height * 0.15);
-    const trophyMaxWidth = Math.floor(metadata.width * 0.12);
-    const trophyMaxHeight = Math.floor(metadata.height * 0.2);
-    const valleLogoWidth = Math.floor(metadata.width * 0.26);
-
-    const resizedMileniumLogo = await prepareOverlay(mileniumLogoBuffer, {
-      maxWidth: mileniumMaxWidth,
-      maxHeight: mileniumMaxHeight,
-      boost: true,
-    });
-
-    const resizedTrophyLogo = await prepareOverlay(trophyLogoBuffer, {
-      maxWidth: trophyMaxWidth,
-      maxHeight: trophyMaxHeight,
-      tint: "#d4a017",
-      boost: true,
-    });
-
-    const valleLogoBuffer = await prepareOverlay(createValleDeNapaSvg(valleLogoWidth), {
-      maxWidth: valleLogoWidth,
-      maxHeight: Math.floor(valleLogoWidth * 0.42),
-      boost: true,
-    });
-
-    const mileniumMeta = await sharp(resizedMileniumLogo).metadata();
-    const mileniumWidth = mileniumMeta.width || mileniumMaxWidth;
-    const mileniumHeight = mileniumMeta.height || mileniumMaxHeight;
-
-    const trophyMeta = await sharp(resizedTrophyLogo).metadata();
-    const trophyWidth = trophyMeta.width || trophyMaxWidth;
-    const trophyHeight = trophyMeta.height || trophyMaxHeight;
-
-    const valleMeta = await sharp(valleLogoBuffer).metadata();
-    const valleWidth = valleMeta.width || valleLogoWidth;
-    const valleHeight = valleMeta.height || Math.floor(valleLogoWidth * 0.42);
+    const brandStrip = await createBrandStrip(metadata.width, metadata.height);
 
     const watermarkedBuffer = await mainImage
       .composite([
         {
-          input: valleLogoBuffer,
-          left: padding,
-          top: metadata.height - valleHeight - padding,
-        },
-        {
-          input: resizedMileniumLogo,
-          left: metadata.width - mileniumWidth - padding,
-          top: metadata.height - mileniumHeight - padding,
-        },
-        {
-          input: resizedTrophyLogo,
-          left: Math.max(padding, Math.round((metadata.width - trophyWidth) / 2)),
-          top: metadata.height - trophyHeight - padding,
+          input: brandStrip.input,
+          left: brandStrip.left,
+          top: brandStrip.top,
         },
       ])
       .jpeg({ quality: 92 })
