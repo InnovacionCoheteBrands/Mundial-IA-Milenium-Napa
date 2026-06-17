@@ -7,7 +7,8 @@ import sharp from "sharp";
 import path from "path";
 import fs from "fs";
 
-const MILENIUM_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium_correcto.webp");
+const MILENIUM_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium__1767829210784.png");
+const VALLE_DE_NAPA_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_valle_de_napa.webp");
 const TROPHY_LOGO_PATH = path.join(process.cwd(), "attached_assets", "ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png");
 const TRANSFORM_PIPELINE_VERSION = "2026-06-16-prompt-watermark-v3";
 
@@ -16,58 +17,11 @@ function logTransformRuntimeStatus() {
     cwd: process.cwd(),
     pipelineVersion: TRANSFORM_PIPELINE_VERSION,
     mileniumLogoExists: fs.existsSync(MILENIUM_LOGO_PATH),
+    valleDeNapaLogoExists: fs.existsSync(VALLE_DE_NAPA_LOGO_PATH),
     trophyLogoExists: fs.existsSync(TROPHY_LOGO_PATH),
   };
 
   console.log("Transform runtime status:", assetsStatus);
-}
-
-function createValleDeNapaSvg(width: number): Buffer {
-  const height = Math.round(width * 0.28);
-  const titleSize = Math.max(18, Math.round(width * 0.135));
-  const subtitleSize = Math.max(10, Math.round(width * 0.05));
-
-  const svg = `
-    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="titleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#f3e8d0"/>
-          <stop offset="50%" stop-color="#ffffff"/>
-          <stop offset="100%" stop-color="#dcc19b"/>
-        </linearGradient>
-        <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.8)"/>
-        </filter>
-      </defs>
-      <g filter="url(#softShadow)">
-        <text
-          x="${width / 2}"
-          y="${Math.round(height * 0.42)}"
-          text-anchor="middle"
-          fill="url(#titleGradient)"
-          font-size="${titleSize}"
-          font-weight="700"
-          font-family="'Brush Script MT','Segoe Script','Lucida Handwriting',cursive"
-        >
-          Valle de Napa
-        </text>
-        <text
-          x="${width / 2}"
-          y="${Math.round(height * 0.77)}"
-          text-anchor="middle"
-          fill="#efe3c9"
-          font-size="${subtitleSize}"
-          font-weight="700"
-          letter-spacing="4"
-          font-family="'Trajan Pro','Georgia','Times New Roman',serif"
-        >
-          RESIDENCIAL
-        </text>
-      </g>
-    </svg>
-  `;
-
-  return Buffer.from(svg);
 }
 
 async function prepareOverlay(
@@ -187,15 +141,15 @@ async function createBrandStrip(imageWidth: number, imageHeight: number): Promis
     tint: "#efe8dd",
     shadow: false,
   });
-  const valleBuffer = await prepareOverlay(createValleDeNapaSvg(Math.round(centerSlotWidth * 0.78)), {
+  const valleBuffer = await prepareOverlay(fs.readFileSync(VALLE_DE_NAPA_LOGO_PATH), {
     maxWidth: Math.round(centerSlotWidth * 0.78),
     maxHeight: Math.round(stripHeight * 0.54),
+    tint: "#ffffff",
     shadow: false,
   });
   const mileniumBuffer = await prepareOverlay(fs.readFileSync(MILENIUM_LOGO_PATH), {
     maxWidth: Math.round(mileniumSlotWidth * 0.84),
     maxHeight: Math.round(stripHeight * 0.72),
-    tint: "#ffffff",
     shadow: false,
   });
 
@@ -299,6 +253,8 @@ async function addWatermarkToImage(imageBase64: string): Promise<string> {
       cwd: process.cwd(),
       mileniumLogoPath: MILENIUM_LOGO_PATH,
       mileniumLogoExists: fs.existsSync(MILENIUM_LOGO_PATH),
+      valleDeNapaLogoPath: VALLE_DE_NAPA_LOGO_PATH,
+      valleDeNapaLogoExists: fs.existsSync(VALLE_DE_NAPA_LOGO_PATH),
       trophyLogoPath: TROPHY_LOGO_PATH,
       trophyLogoExists: fs.existsSync(TROPHY_LOGO_PATH),
     });

@@ -6,29 +6,20 @@ import { Download, Image as ImageIcon, Trophy } from "lucide-react";
 import { Link } from "wouter";
 import { type Transformation, teamInfo, type TeamId } from "@shared/schema";
 import worldcupBg from "@assets/generated_images/valle_napa_bg.png";
-import mileniumLogo from "@assets/logo_milenium_correcto.webp";
+import valleDeNapaLogo from "@assets/logo_valle_de_napa.webp";
+import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
 
 function ValleDeNapaLogo({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`flex flex-col items-center leading-none rounded-xl px-3 py-1.5 ${className}`}
+      className={`flex items-center rounded-xl px-3 py-1.5 ${className}`}
       style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
     >
-      <span
-        className="text-white"
-        style={{
-          fontFamily: "'Dancing Script', cursive",
-          fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
-          fontWeight: 700,
-          lineHeight: 1.1,
-          textShadow: '0 2px 10px rgba(0,0,0,1), 0 0px 20px rgba(0,0,0,0.8)',
-        }}
-      >
-        Valle de Napa
-      </span>
-      <span className="mt-0.5 rounded-sm bg-white/95 px-2 py-px text-[8px] font-black uppercase tracking-[0.2em] text-green-900">
-        RESIDENCIAL
-      </span>
+      <img
+        src={valleDeNapaLogo}
+        alt="Valle de Napa"
+        className="h-8 w-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+      />
     </div>
   );
 }
@@ -82,7 +73,7 @@ export default function ImagesGallery() {
             <img
               src={mileniumLogo}
               alt="Milenium"
-              className="h-7 w-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+              className="h-7 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
             />
           </div>
         </header>

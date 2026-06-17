@@ -24,7 +24,8 @@ import { TEAMS, teamInfo, type TeamId } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import trophyImage from "@assets/ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png";
-import mileniumLogo from "@assets/logo_milenium_correcto.webp";
+import valleDeNapaLogo from "@assets/logo_valle_de_napa.webp";
+import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
 import qrGallery from "@assets/qr-images-gallery.png";
 import worldcupBg from "@assets/generated_images/valle_napa_bg.png";
 
@@ -99,25 +100,15 @@ function GoldBadge({ children, className = "" }: { children: React.ReactNode; cl
 function ValleDeNapaLogo({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`flex flex-col items-center leading-none rounded-xl px-3 py-1.5 ${className}`}
+      className={`flex items-center rounded-xl px-3 py-1.5 ${className}`}
       style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
       data-testid="img-valle-de-napa-logo"
     >
-      <span
-        className="text-white"
-        style={{
-          fontFamily: "'Dancing Script', cursive",
-          fontSize: "clamp(1.1rem, 3vw, 1.6rem)",
-          fontWeight: 700,
-          lineHeight: 1.1,
-          textShadow: '0 2px 10px rgba(0,0,0,1), 0 0px 20px rgba(0,0,0,0.8)',
-        }}
-      >
-        Valle de Napa
-      </span>
-      <span className="mt-0.5 rounded-sm bg-white/95 px-2 py-px text-[8px] font-black uppercase tracking-[0.2em] text-green-900 sm:text-[9px]">
-        RESIDENCIAL
-      </span>
+      <img
+        src={valleDeNapaLogo}
+        alt="Valle de Napa"
+        className="h-8 w-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:h-10"
+      />
     </div>
   );
 }
@@ -915,7 +906,7 @@ export default function SingleFlowPage() {
             <img
               src={mileniumLogo}
               alt="Milenium"
-              className="h-7 w-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:h-9"
+              className="h-7 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:h-9"
               data-testid="img-milenium-logo"
             />
           </div>
