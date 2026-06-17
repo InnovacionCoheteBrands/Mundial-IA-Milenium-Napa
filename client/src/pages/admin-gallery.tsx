@@ -7,7 +7,7 @@ import { ArrowLeft, Download, Image as ImageIcon, Trophy } from "lucide-react";
 import type { Transformation } from "@shared/schema";
 import { teamInfo, type TeamId } from "@shared/schema";
 import worldcupBg from "@assets/generated_images/valle_napa_bg.png";
-import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
+import mileniumLogo from "@assets/logo_milenium_correcto.webp";
 
 function ValleDeNapaLogo({ className = "" }: { className?: string }) {
   return (
@@ -79,7 +79,7 @@ export default function AdminGallery() {
             <img
               src={mileniumLogo}
               alt="Milenium"
-              className="h-7 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+              className="h-7 w-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
             />
           </div>
         </header>

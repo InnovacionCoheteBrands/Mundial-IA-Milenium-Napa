@@ -24,7 +24,7 @@ import { TEAMS, teamInfo, type TeamId } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import trophyImage from "@assets/ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png";
-import mileniumLogo from "@assets/logo_milenium__1767829210784.png";
+import mileniumLogo from "@assets/logo_milenium_correcto.webp";
 import qrGallery from "@assets/qr-images-gallery.png";
 import worldcupBg from "@assets/generated_images/valle_napa_bg.png";
 
@@ -915,7 +915,7 @@ export default function SingleFlowPage() {
             <img
               src={mileniumLogo}
               alt="Milenium"
-              className="h-7 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:h-9"
+              className="h-7 w-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:h-9"
               data-testid="img-milenium-logo"
             />
           </div>

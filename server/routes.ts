@@ -7,7 +7,7 @@ import sharp from "sharp";
 import path from "path";
 import fs from "fs";
 
-const MILENIUM_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium__1767829210784.png");
+const MILENIUM_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium_correcto.webp");
 const TROPHY_LOGO_PATH = path.join(process.cwd(), "attached_assets", "ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png");
 const TRANSFORM_PIPELINE_VERSION = "2026-06-16-prompt-watermark-v3";
 
@@ -195,6 +195,7 @@ async function createBrandStrip(imageWidth: number, imageHeight: number): Promis
   const mileniumBuffer = await prepareOverlay(fs.readFileSync(MILENIUM_LOGO_PATH), {
     maxWidth: Math.round(mileniumSlotWidth * 0.84),
     maxHeight: Math.round(stripHeight * 0.72),
+    tint: "#ffffff",
     shadow: false,
   });
 
