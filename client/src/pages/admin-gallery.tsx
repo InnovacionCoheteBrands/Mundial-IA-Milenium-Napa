@@ -133,18 +133,16 @@ export default function AdminGallery() {
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 sm:gap-4">
                 {transformations.map((transformation) => {
                   const team = transformation.team as TeamId;
-                  const teamData = teamInfo[team];
-
                   return (
                     <Card
                       key={transformation.id}
-                      className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-black/20 backdrop-blur-sm"
+                      className="group relative overflow-hidden rounded-xl bg-transparent shadow-none"
                       data-testid={`card-transformation-${transformation.id}`}
                     >
                       <img
                         src={transformation.transformedImageUrl}
                         alt={`Transformación ${transformation.id}`}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="aspect-square h-full w-full rounded-xl object-cover shadow-[0_18px_45px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:scale-[1.03]"
                         loading="lazy"
                       />
 
@@ -166,14 +164,6 @@ export default function AdminGallery() {
                         </Button>
                       </div>
 
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent px-3 py-2">
-                        <p className="text-xs font-semibold text-white">
-                          {teamData?.name || team}
-                        </p>
-                        <p className="text-[10px] text-white/60">
-                          {new Date(transformation.createdAt).toLocaleDateString("es-ES")}
-                        </p>
-                      </div>
                     </Card>
                   );
                 })}

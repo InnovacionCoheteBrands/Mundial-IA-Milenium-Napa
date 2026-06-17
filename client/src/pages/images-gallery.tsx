@@ -148,13 +148,13 @@ export default function ImagesGallery() {
                     return (
                       <Card
                         key={transformation.id}
-                        className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-black/20 backdrop-blur-sm"
+                        className="group relative overflow-hidden rounded-xl bg-transparent shadow-none"
                         data-testid={`card-image-${transformation.id}`}
                       >
                         <img
                           src={transformation.transformedImageUrl}
                           alt={`Fan de ${teamData?.name || team}`}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="aspect-square h-full w-full rounded-xl object-cover shadow-[0_18px_45px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:scale-[1.03]"
                           loading="lazy"
                         />
 
@@ -176,11 +176,6 @@ export default function ImagesGallery() {
                           </Button>
                         </div>
 
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent px-3 py-2">
-                          <p className="text-xs font-semibold text-white">
-                            {teamData?.name || team}
-                          </p>
-                        </div>
                       </Card>
                     );
                   })}

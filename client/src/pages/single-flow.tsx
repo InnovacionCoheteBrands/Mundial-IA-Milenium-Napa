@@ -409,7 +409,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
       </div>
 
       <div
-        className={`relative w-full overflow-hidden rounded-lg sm:rounded-xl ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
+        className="relative w-full overflow-hidden rounded-lg aspect-video sm:rounded-xl"
         style={{
           borderColor: teamColors?.primary || "#dc2626",
           borderWidth: "3px",
@@ -421,7 +421,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
           <img
             src={capturedPreview}
             alt="Foto capturada"
-            className="h-full w-full object-cover"
+            className="h-full w-full bg-black object-contain"
             data-testid="img-captured-preview"
           />
         ) : showError ? (
@@ -443,7 +443,7 @@ function CaptureContent({ onContinue }: { onContinue: () => void }) {
             autoPlay
             playsInline
             muted
-            className={`h-full w-full ${isMobile ? "object-contain bg-black" : "object-cover"} ${facingMode === "user" ? "scale-x-[-1]" : ""}`}
+            className={`h-full w-full bg-black object-contain ${facingMode === "user" ? "scale-x-[-1]" : ""}`}
             data-testid="video-camera"
           />
         )}
@@ -733,7 +733,7 @@ function ResultContent({
             <img
               src={capturedImage}
               alt="Foto original"
-              className={`w-full max-w-sm rounded-lg ${isMobile ? "aspect-[3/4] object-contain bg-black" : "aspect-video object-cover"}`}
+              className="aspect-video w-full max-w-sm rounded-lg bg-black object-contain shadow-[0_20px_50px_rgba(0,0,0,0.45)]"
               data-testid="img-original-fallback"
             />
           )}
@@ -741,24 +741,19 @@ function ResultContent({
       ) : (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
           <div
-            className={`relative w-full overflow-hidden rounded-xl sm:flex-1 ${isMobile ? "aspect-[3/4]" : "aspect-video"}`}
-            style={{
-              borderColor: teamColors?.primary || "#dc2626",
-              borderWidth: "3px",
-              borderStyle: "solid",
-            }}
+            className="relative w-full aspect-video sm:flex-1"
             data-testid="card-result-image"
           >
             <img
               src={displayImage!}
               alt="Retrato mundialista"
-              className={`h-full w-full ${isMobile ? "object-contain bg-black" : "object-cover"}`}
+              className="h-full w-full rounded-xl bg-black object-contain shadow-[0_24px_60px_rgba(0,0,0,0.5)]"
               data-testid="img-result"
             />
 
             {/* Decorative soccer ball overlay — top-right */}
             <div
-              className="pointer-events-none absolute -right-4 -top-4 select-none text-7xl opacity-20 sm:text-8xl"
+              className="hidden"
               aria-hidden="true"
             >
               ⚽
@@ -766,7 +761,7 @@ function ResultContent({
 
             {/* Decorative soccer ball overlay — bottom-left */}
             <div
-              className="pointer-events-none absolute -bottom-4 -left-4 select-none text-6xl opacity-[.15] sm:text-7xl"
+              className="hidden"
               aria-hidden="true"
             >
               ⚽
@@ -774,7 +769,7 @@ function ResultContent({
 
             {/* Decorative jersey overlay — bottom-right corner */}
             <div
-              className="pointer-events-none absolute bottom-3 right-3 flex flex-col items-center"
+              className="hidden"
               aria-hidden="true"
             >
               <div
@@ -786,7 +781,7 @@ function ResultContent({
             </div>
 
             {/* Milenium watermark */}
-            <div className="absolute bottom-2 left-2">
+            <div className="hidden">
               <span className="rounded-full bg-black/60 px-2 py-1 text-xs font-bold text-white backdrop-blur-sm">
                 ⚽ Milenium
               </span>
