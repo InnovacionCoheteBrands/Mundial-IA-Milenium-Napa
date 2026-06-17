@@ -9,6 +9,18 @@ import fs from "fs";
 
 const MILENIUM_LOGO_PATH = path.join(process.cwd(), "attached_assets", "logo_milenium__1767829210784.png");
 const TROPHY_LOGO_PATH = path.join(process.cwd(), "attached_assets", "ChatGPT_Image_6_ene_2026,_15_32_44_1767829210783.png");
+const TRANSFORM_PIPELINE_VERSION = "2026-06-16-prompt-watermark-v2";
+
+function logTransformRuntimeStatus() {
+  const assetsStatus = {
+    cwd: process.cwd(),
+    pipelineVersion: TRANSFORM_PIPELINE_VERSION,
+    mileniumLogoExists: fs.existsSync(MILENIUM_LOGO_PATH),
+    trophyLogoExists: fs.existsSync(TROPHY_LOGO_PATH),
+  };
+
+  console.log("Transform runtime status:", assetsStatus);
+}
 
 function createValleDeNapaSvg(width: number): Buffer {
   const height = Math.round(width * 0.42);
@@ -206,7 +218,15 @@ async function addWatermarkToImage(imageBase64: string): Promise<string> {
 
     return `data:image/jpeg;base64,${watermarkedBuffer.toString("base64")}`;
   } catch (error) {
-    console.error("Watermark error:", error);
+    console.error("Watermark error:", {
+      error,
+      pipelineVersion: TRANSFORM_PIPELINE_VERSION,
+      cwd: process.cwd(),
+      mileniumLogoPath: MILENIUM_LOGO_PATH,
+      mileniumLogoExists: fs.existsSync(MILENIUM_LOGO_PATH),
+      trophyLogoPath: TROPHY_LOGO_PATH,
+      trophyLogoExists: fs.existsSync(TROPHY_LOGO_PATH),
+    });
     return imageBase64;
   }
 }
@@ -409,6 +429,8 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  logTransformRuntimeStatus();
+
   app.post("/api/transform", async (req, res) => {
     try {
       const { team, image } = req.body;
